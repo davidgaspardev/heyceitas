@@ -1,14 +1,15 @@
 import React from 'react';
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Image } from 'react-native';
 
-import Home from '../screens/Home';
-import Pantry from '../screens/Pantry';
-import Recipes from '../screens/Recipes';
-import Settings from '../screens/Settings';
+import Login from '../screens/login/Login';
 
-// Navigation Bar | HeyCeitas
-export default TabNavigator({
+import Home from '../screens/main/Home';
+import Pantry from '../screens/main/Pantry';
+import Recipes from '../screens/main/Recipes';
+import Settings from '../screens/main/Settings';
+
+const MainNavigation = TabNavigator({
   Home: {
     screen: Home,
     navigationOptions: {
@@ -82,3 +83,19 @@ export default TabNavigator({
     }
   }
 });
+
+const LoginNavigation = StackNavigator({
+  Login: {
+    screen: Login
+  },
+  Logged: {
+    screen: MainNavigation
+  }
+}, {
+  headerMode: 'none',
+  navigationOptions: {
+    headerVisible: false
+  }
+});
+
+export default LoginNavigation;
