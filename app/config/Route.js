@@ -3,11 +3,24 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Image } from 'react-native';
 
 import Login from '../screens/login/Login';
-
 import Home from '../screens/main/Home';
 import Pantry from '../screens/main/Pantry';
-import Recipes from '../screens/main/Recipes';
+import Category from '../screens/main/recipes/Category';
+import Recipes from '../screens/main/recipes/Recipes';
+import RecipeDetail from '../screens/main/recipes/RecipeDetail';
 import Settings from '../screens/main/Settings';
+
+const RecipesNavigation = StackNavigator({
+  Category: {
+    screen: Category
+  },
+  Recipes: {
+    screen: Recipes
+  },
+  RecipeDetail: {
+    screen: RecipeDetail
+  }
+})
 
 const MainNavigation = TabNavigator({
   Home: {
@@ -41,7 +54,7 @@ const MainNavigation = TabNavigator({
     }
   },
   Recipes: {
-    screen: Recipes,
+    screen: RecipesNavigation,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
         <Image

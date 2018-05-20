@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-export default class Recipes extends React.Component {
+export default class RecipeDetail extends React.Component {
 
   render() {
-    return (
+    return(
       <View style={styles.container}>
-        <Text>Recipes</Text>
+        <Text>Recipe Detail</Text>
       </View>
     );
   }
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }
-});
+})
