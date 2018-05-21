@@ -11,16 +11,19 @@ export default class Login extends React.Component {
 
         <View style={styles.login}>
 
-          <TouchableOpacity onPress={
-            () => this.props.navigation.navigate('Logged')
-          }>
-            <Image source={require('../../images/login/facebook.png')} style={styles.buttonLogin} />
-          </TouchableOpacity>
+          <Image source={require('../../images/login/logo.png')} style={styles.loginLogo}/>
 
           <TouchableOpacity onPress={
             () => this.props.navigation.navigate('Logged')
           }>
-            <Image source={require('../../images/login/google.png')} style={styles.buttonLogin} />
+            <Image source={require('../../images/login/facebook.png')} style={styles.loginButton} />
+          </TouchableOpacity>
+
+
+          <TouchableOpacity onPress={
+            () => this.props.navigation.navigate('Logged')
+          }>
+            <Image source={require('../../images/login/google.png')} style={styles.loginButton} />
           </TouchableOpacity>
 
         </View>
@@ -50,9 +53,15 @@ const styles = StyleSheet.create({
     left: 0,
     backgroundColor: 'rgba( 0, 0, 0, .3)'
   },
-  buttonLogin: {
-    width: 300,
-    height: 50,
-    margin: 10
+  loginLogo: {
+    width: 250,
+    height: 193,
+    marginBottom: 100
+  },
+  loginButton: {
+    width: 270,
+    height: 40,
+    margin: 10,
+    borderRadius: 5
   }
 });
