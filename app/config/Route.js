@@ -20,6 +20,8 @@ const RecipesNavigation = StackNavigator({
   RecipeDetail: {
     screen: RecipeDetail
   }
+}, {
+  headerMode: 'none'
 })
 
 const MainNavigation = TabNavigator({
