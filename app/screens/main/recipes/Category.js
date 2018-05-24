@@ -106,7 +106,7 @@ export default class Category extends React.Component {
           }
         },
         {
-          "name": "Salgados Vaganos",
+          "name": "Salgados Veganos",
           "image": require("../../../images/category/salty_vegan.jpg"),
           "event": {
             "category": "salty_vegan"
@@ -124,8 +124,6 @@ export default class Category extends React.Component {
   }
 
   render() {
-
-    console.log(this.state.list)
 
     return(
       <View style={styles.container}>
@@ -145,7 +143,7 @@ class CategoryItem extends React.Component {
   render() {
 
     return(
-      <TouchableOpacity style={styles.item} onPress={this.props.onpre}>
+      <TouchableOpacity style={styles.item} onPress={this.props.onpress}>
 
         <Image source={this.props.src} style={styles.itemImage}/>
 
@@ -187,7 +185,8 @@ const styles = StyleSheet.create({
     left: 0,
     backgroundColor: 'rgba( 0, 0, 0, .3)',
     borderRadius: 5,
-    justifyContent: 'flex-end'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   itemText: {
     margin: 10,
