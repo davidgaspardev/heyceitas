@@ -6,12 +6,14 @@ export default class Category extends React.Component {
   constructor(props) {
     super(props)
 
+    let { navigation } = this.props;
+
     this.state = {
-      list: []
+      list: navigation.state.params.data
     }
   }
 
-  componentWillMount() {
+  /*componentWillMount() {
     this.setState({
       list: [
         {
@@ -121,7 +123,7 @@ export default class Category extends React.Component {
         }
       ]
     })
-  }
+  }*/
 
   render() {
 

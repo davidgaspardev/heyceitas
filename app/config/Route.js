@@ -2,6 +2,8 @@ import React from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Image } from 'react-native';
 
+import { DataOthers, DataFits, DataCountries } from './Data';
+
 import Login from '../screens/login/Login';
 import Home from '../screens/main/Home';
 import Pantry from '../screens/main/Pantry';
@@ -10,9 +12,9 @@ import Recipes from '../screens/main/recipes/Recipes';
 import RecipeDetail from '../screens/main/recipes/RecipeDetail';
 import Settings from '../screens/main/Settings';
 
-const RecipesNavigation = StackNavigator({
+const RecipesNavigation = (datat) => StackNavigator({
   Category: {
-    screen: Category
+    screen: Category,
   },
   Recipes: {
     screen: Recipes
@@ -20,8 +22,53 @@ const RecipesNavigation = StackNavigator({
   RecipeDetail: {
     screen: RecipeDetail
   }
-}, {
+},
+{
+  initialRouteParams: {
+    data: datat
+  },
   headerMode: 'none'
+})
+
+const CategoryNavigation = TabNavigator({
+  Others: {
+    screen: RecipesNavigation(DataOthers),
+    navigationOptions: {
+      title: 'Outros'
+    }
+  },
+  Fits: {
+    screen: RecipesNavigation(DataFits),
+    navigationOptions: {
+      title: 'Fit'
+    }
+  },
+  Countries: {
+    screen: RecipesNavigation(DataCountries),
+    navigationOptions: {
+      title: 'Paises'
+    }
+  }
+},
+{
+  swipeEnabled: false,
+  tabBarOptions: {
+    inactiveTintColor: '#555555',
+    activeTintColor: '#952115',
+    style: {
+      backgroundColor: 'white',
+      height: 40
+    },
+    labelStyle: {
+      fontSize: 12,
+      margin: 0,
+      padding: 2,
+      fontWeight: 'bold'
+    },
+    indicatorStyle: {
+      opacity: 0
+    }
+  }
 })
 
 const MainNavigation = TabNavigator({
@@ -56,7 +103,7 @@ const MainNavigation = TabNavigator({
     }
   },
   Recipes: {
-    screen: RecipesNavigation,
+    screen: CategoryNavigation,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
         <Image
