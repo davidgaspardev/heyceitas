@@ -4,15 +4,18 @@ import { Image } from 'react-native';
 
 import { DataOthers, DataFits, DataCountries } from './Data';
 
+// Login Activity
 import Login from '../screens/login/Login';
 import Home from '../screens/main/Home';
+
+// Main Activity
 import Pantry from '../screens/main/Pantry';
 import Category from '../screens/main/recipes/Category';
 import Recipes from '../screens/main/recipes/Recipes';
 import RecipeDetail from '../screens/main/recipes/RecipeDetail';
 import Settings from '../screens/main/Settings';
 
-const RecipesNavigation = (datat) => StackNavigator({
+const RecipesRoute = categoryList => StackNavigator({
   Category: {
     screen: Category,
   },
@@ -23,46 +26,45 @@ const RecipesNavigation = (datat) => StackNavigator({
     screen: RecipeDetail
   }
 },
+// Customization (StackNavigator)
 {
   initialRouteParams: {
-    data: datat
+    list: categoryList
   },
   headerMode: 'none'
 })
 
-const CategoryNavigation = TabNavigator({
+const CategoryRoute = TabNavigator({
   Others: {
-    screen: RecipesNavigation(DataOthers),
+    screen: RecipesRoute(DataOthers),
     navigationOptions: {
       title: 'Outros'
     }
   },
   Fits: {
-    screen: RecipesNavigation(DataFits),
+    screen: RecipesRoute(DataFits),
     navigationOptions: {
       title: 'Fit'
     }
   },
   Countries: {
-    screen: RecipesNavigation(DataCountries),
+    screen: RecipesRoute(DataCountries),
     navigationOptions: {
       title: 'Paises'
     }
   }
 },
+// Customization (TabNavigator)
 {
   swipeEnabled: false,
   tabBarOptions: {
     inactiveTintColor: '#555555',
     activeTintColor: '#952115',
     style: {
-      backgroundColor: 'white',
-      height: 40
+      backgroundColor: 'white'
     },
     labelStyle: {
       fontSize: 12,
-      margin: 0,
-      padding: 2,
       fontWeight: 'bold'
     },
     indicatorStyle: {
@@ -71,7 +73,7 @@ const CategoryNavigation = TabNavigator({
   }
 })
 
-const MainNavigation = TabNavigator({
+const MainRoute = TabNavigator({
   Home: {
     screen: Home,
     navigationOptions: {
@@ -103,7 +105,7 @@ const MainNavigation = TabNavigator({
     }
   },
   Recipes: {
-    screen: CategoryNavigation,
+    screen: CategoryRoute,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
         <Image
@@ -132,7 +134,9 @@ const MainNavigation = TabNavigator({
       )
     }
   }
-},{
+},
+// Customization (TabNavigator)
+{
   tabBarPosition: 'bottom',
   tabBarOptions: {
     showIcon: true,
@@ -146,18 +150,20 @@ const MainNavigation = TabNavigator({
   }
 });
 
-const LoginNavigation = StackNavigator({
+const LoginRoute = StackNavigator({
   Login: {
     screen: Login
   },
   Logged: {
-    screen: MainNavigation
+    screen: MainRoute
   }
-}, {
+},
+// Customization (StackNavigator)
+{
   headerMode: 'none',
   navigationOptions: {
     headerVisible: false
   }
 });
 
-export default LoginNavigation;
+export default LoginRoute;

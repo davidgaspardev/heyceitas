@@ -9,7 +9,7 @@ export default class Category extends React.Component {
     let { navigation } = this.props;
 
     this.state = {
-      list: navigation.state.params.data
+      list: navigation.state.params.list
     }
   }
 

@@ -6,9 +6,11 @@ export default class Recipes extends React.Component {
   constructor(props) {
     super(props)
 
+    const { navigation } = this.props;
+
     this.state = {
       isLoading: true,
-      category: this.props.navigation.state.params.category,
+      category: navigation.state.params.category,
       list: []
     }
   }
@@ -23,7 +25,11 @@ export default class Recipes extends React.Component {
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
-          <ActivityIndicator />
+          <Image source={require('../../../images/gif/loading.gif')}
+          style={{
+            width: 200,
+            height: 150
+          }}/>
         </View>
       )
     }
@@ -87,6 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     flex: 1,
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center'
   },
