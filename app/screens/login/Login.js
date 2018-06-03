@@ -11,15 +11,17 @@ export default class Login extends React.Component {
 
         <View style={styles.login}>
 
+          { /* Logo HEYceitas */ }
           <Image source={require('../../images/login/logo.png')} style={styles.loginLogo}/>
 
+          { /* Button to Facebook */ }
           <TouchableOpacity onPress={
             () => this.props.navigation.navigate('Logged')
           }>
             <Image source={require('../../images/login/facebook.png')} style={styles.loginButton} />
           </TouchableOpacity>
 
-
+          { /* Button to Google */ }
           <TouchableOpacity onPress={
             () => this.props.navigation.navigate('Logged')
           }>
@@ -62,7 +64,6 @@ const styles = StyleSheet.create({
     width: 270,
     height: 40,
     margin: 10,
-    borderRadius: 5,
-    elevation: 5
+    borderRadius: 5
   }
 });

@@ -13,118 +13,6 @@ export default class Category extends React.Component {
     }
   }
 
-  /*componentWillMount() {
-    this.setState({
-      list: [
-        {
-          "name": "Brasileiras",
-          "image": require("../../../images/category/brazilian.jpg"),
-          "event": {
-            "category": "brazilian"
-          }
-        },
-        {
-          "name": "Carnes",
-          "image": require("../../../images/category/meat.jpg"),
-          "event": {
-            "category": "meat"
-          }
-        },
-        {
-          "name": "Doces",
-          "image": require("../../../images/category/candy.jpg"),
-          "event": {
-            "category": "candy"
-          }
-        },
-        {
-          "name": "Doces Fit",
-          "image": require("../../../images/category/sweet_fit.jpg"),
-          "event": {
-            "category": "sweet_fit"
-          }
-        },
-        {
-          "name": "Doces Veganos",
-          "image": require("../../../images/category/sweet_vegan.jpg"),
-          "event": {
-            "category": "sweet_vegan"
-          }
-        },
-        {
-          "name": "Francesa",
-          "image": require("../../../images/category/french.jpg"),
-          "event": {
-            "category": "french"
-          }
-        },
-        {
-          "name": "Frango",
-          "image": require("../../../images/category/chicken.jpg"),
-          "event": {
-            "category": "chicken"
-          }
-        },
-        {
-          "name": "Italiano",
-          "image": require("../../../images/category/italian.jpg"),
-          "event": {
-            "category": "italian"
-          }
-        },
-        {
-          "name": "Massas",
-          "image": require("../../../images/category/pastas.jpg"),
-          "event": {
-            "category": "pastas"
-          }
-        },
-        {
-          "name": "Práticas",
-          "image": require("../../../images/category/practices.jpg"),
-          "event": {
-            "category": "practices"
-          }
-        },
-        {
-          "name": "Sopas",
-          "image": require("../../../images/category/soups.jpg"),
-          "event": {
-            "category": "soups"
-          }
-        },
-        {
-          "name": "Sucos",
-          "image": require("../../../images/category/juices.jpg"),
-          "event": {
-            "category": "juices"
-          }
-        },
-        {
-          "name": "Salgados Fit",
-          "image": require("../../../images/category/salty_fit.jpg"),
-          "event": {
-            "category": "salty_fit"
-          }
-        },
-        {
-          "name": "Salgados Veganos",
-          "image": require("../../../images/category/salty_vegan.jpg"),
-          "event": {
-            "category": "salty_vegan"
-          }
-        },
-        {
-          "name": "Vegetarianos",
-          "image": require("../../../images/category/vegetarian.jpg"),
-          "event": {
-            "category": "vegetarian"
-          }
-        }
-      ]
-    })
-  }*/
-
   render() {
 
     return(
@@ -132,7 +20,10 @@ export default class Category extends React.Component {
 
         <FlatList
           data={this.state.list}
-          renderItem={({item}) => <CategoryItem src={item.image} title={item.name} onpress={() => this.props.navigation.navigate('Recipes', item.event)}/>}
+          renderItem={({item}) => <CategoryItem
+            src={item.image}
+            title={item.name}
+            onpress={() => this.props.navigation.navigate('Recipes', item.event)}/>}
         />
 
       </View>
