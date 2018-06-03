@@ -6,11 +6,18 @@ export default class Category extends React.Component {
   constructor(props) {
     super(props)
 
-    let { navigation } = this.props;
-
     this.state = {
-      list: navigation.state.params.list
+      list: []
     }
+  }
+
+  componentWillMount() {
+
+    const { state } = this.props.navigation;
+
+    this.setState({
+      list: state.params.list
+    })
   }
 
   render() {
@@ -55,7 +62,8 @@ class CategoryItem extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    flex: 1
+    flex: 1,
+    backgroundColor: 'white'
   },
   item: {
     height: 200,

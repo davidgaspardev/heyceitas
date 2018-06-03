@@ -44,7 +44,7 @@ const CategoryRoute = TabNavigator({
   Fits: {
     screen: RecipesRoute(DataFits),
     navigationOptions: {
-      title: 'Fit'
+      title: 'Fits'
     }
   },
   Countries: {

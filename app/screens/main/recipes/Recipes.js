@@ -41,7 +41,11 @@ export default class Recipes extends React.Component {
         <FlatList
           data={this.state.list}
           numColumns={2}
-          renderItem={({item}) => <RecipeItem img={item.image} name={item.name} />}
+          renderItem={({item}) => <RecipeItem
+            img={item.image}
+            name={item.name}
+            onpress={() => this.props.navigation.navigate('RecipeDetail', { recipe: item }) }
+          />}
           keyExtractor={({item, index}) => index}
         />
 
@@ -72,7 +76,7 @@ class RecipeItem extends React.Component {
   render() {
 
     return(
-      <TouchableOpacity  style={styles.recipe}>
+      <TouchableOpacity  style={styles.recipe} onPress={this.props.onpress}>
 
         <Image source={{ uri: this.props.img }} style={styles.recipeImage}/>
 
