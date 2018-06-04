@@ -1,5 +1,6 @@
-import React from 'react';
-import { TouchableOpacity, ActivityIndicator, Dimensions, StyleSheet, FlatList, Image, View, Text } from 'react-native';
+import React from 'react'
+import { TouchableOpacity, ActivityIndicator, Dimensions, StyleSheet, FlatList, Image, View, Text } from 'react-native'
+import Button from './components/ReturnButton'
 
 export default class Recipes extends React.Component {
 
@@ -37,6 +38,8 @@ export default class Recipes extends React.Component {
 
     return (
       <View style={styles.container}>
+
+        <Button event={ () => this.props.navigation.goBack() }/>
 
         <FlatList
           data={this.state.list}

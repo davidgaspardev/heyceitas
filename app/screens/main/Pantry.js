@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   //Header
   header: {
     alignSelf: 'stretch',
-    height: 45,
-    elevation: 2,
+    height: 48,
+    elevation: 1,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center'

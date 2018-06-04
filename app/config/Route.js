@@ -6,7 +6,7 @@ import { DataOthers, DataFits, DataCountries } from './Data';
 
 // Login Activity
 import Login from '../screens/login/Login';
-import Home from '../screens/main/Home';
+import Home from '../screens/main/home/Home';
 
 // Main Activity
 import Pantry from '../screens/main/Pantry';
