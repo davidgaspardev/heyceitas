@@ -25,6 +25,8 @@ export default class Category extends React.Component {
     return(
       <View style={styles.container}>
 
+        <Header />
+
         <FlatList
           data={this.state.list}
           renderItem={({item}) => <CategoryItem
@@ -35,6 +37,17 @@ export default class Category extends React.Component {
 
       </View>
     );
+  }
+}
+
+class Header extends React.Component {
+
+  render() {
+    return(
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Categorias</Text>
+      </View>
+    )
   }
 }
 
@@ -65,11 +78,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white'
   },
+  header: {
+    alignSelf: 'stretch',
+    height: 48,
+    elevation: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white'
+  },
+  headerTitle: {
+    fontSize: 36,
+    fontFamily: 'umbrella',
+    color: '#952115'
+  },
+
   item: {
     height: 200,
     alignSelf: 'stretch',
     backgroundColor: 'white',
-    margin: 5,
+    marginTop: 2.5,
+    marginLeft: 5,
+    marginBottom: 2.5,
+    marginRight: 5,
     elevation: 3,
     borderRadius: 5
   },

@@ -26,7 +26,7 @@ export default class Recipes extends React.Component {
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
-          <Image source={require('../../../images/gif/loading.gif')}
+          <Image source={ require('../../../images/gif/loading.gif') }
           style={{
             width: 200,
             height: 150
@@ -109,7 +109,9 @@ const styles = StyleSheet.create({
     height: 200,
   },
   recipeImage: {
-    flex: 1
+    flex: 1,
+    //borderRadius: 5,
+    //margin: 1
   },
   recipeLegende: {
     position: 'absolute',
@@ -122,8 +124,8 @@ const styles = StyleSheet.create({
   },
   recipeText: {
     color: 'white',
-    fontWeight: 'bold',
-    fontSize: 17,
+    fontFamily: 'umbrella',
+    fontSize: 30,
     padding: 5,
     textAlign: 'center'
   }

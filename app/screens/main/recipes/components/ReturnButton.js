@@ -19,11 +19,11 @@ export default class ReturnButton extends React.Component {
 const styles = StyleSheet.create({
   back: {
     position: 'absolute',
-    left: 10,
-    bottom: 10,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    right: 15,
+    bottom: 15,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     backgroundColor: '#ff3333',
     elevation: 5,
     alignItems: 'center',

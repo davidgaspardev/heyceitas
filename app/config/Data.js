@@ -1,5 +1,7 @@
 
-export const DataOthers = [
+export default Categorys = [
+
+  // Geral
   {
     "name": "Carnes",
     "image": require("../images/category/meat.jpg"),
@@ -12,13 +14,6 @@ export const DataOthers = [
     "image": require("../images/category/candy.jpg"),
     "event": {
       "category": "candy"
-    }
-  },
-  {
-    "name": "Doces Veganos",
-    "image": require("../images/category/sweet_vegan.jpg"),
-    "event": {
-      "category": "sweet_vegan"
     }
   },
   {
@@ -57,22 +52,14 @@ export const DataOthers = [
     }
   },
   {
-    "name": "Salgados Veganos",
-    "image": require("../images/category/salty_vegan.jpg"),
-    "event": {
-      "category": "salty_vegan"
-    }
-  },
-  {
     "name": "Vegetarianos",
     "image": require("../images/category/vegetarian.jpg"),
     "event": {
       "category": "vegetarian"
     }
-  }
-];
+  },
 
-export const DataFits = [
+  // Fits
   {
     "name": "Doces Fit",
     "image": require("../images/category/sweet_fit.jpg"),
@@ -86,10 +73,9 @@ export const DataFits = [
     "event": {
       "category": "salty_fit"
     }
-  }
-]
+  },
 
-export const DataCountries = [
+  // Countries
   {
     "name": "Brasileiras",
     "image": require("../images/category/brazilian.jpg"),
@@ -101,7 +87,7 @@ export const DataCountries = [
     "name": "Francesa",
     "image": require("../images/category/french.jpg"),
     "event": {
-      "category": "french"
+      "category": "japanese"
     }
   },
   {
@@ -110,5 +96,28 @@ export const DataCountries = [
     "event": {
       "category": "italian"
     }
+  },
+  {
+    "name": "Japonesa",
+    "image": require("../images/category/japanese.jpg"),
+    "event": {
+      "category": "japanese"
+    }
+  },
+
+  // Vegans
+  {
+    "name": "Doces Veganos",
+    "image": require("../images/category/sweet_vegan.jpg"),
+    "event": {
+      "category": "sweet_vegan"
+    }
+  },
+  {
+    "name": "Salgados Veganos",
+    "image": require("../images/category/salty_vegan.jpg"),
+    "event": {
+      "category": "salty_vegan"
+    }
   }
-]
+];
