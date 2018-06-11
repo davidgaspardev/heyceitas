@@ -9,12 +9,13 @@ export default class Home extends React.Component {
   //<Image source={require(../../../images/logo/logo.png)} style={{width:150, height:50}}/>
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {paddingBottom:5}]}>
       <Image source={require('../../../images/logos/heyceitas.png')} style={styles.logo}/>
         <Favorites/>
         <View style={styles.footer}>
-        <Text>BUSCAS RECENTES></Text>
-      </View>
+        <Text style={{padding:7.5}}>BUSCAS RECENTES></Text>
+        <RecentSearched/>
+        </View>
       </View>
     );
   }
@@ -22,10 +23,19 @@ export default class Home extends React.Component {
 
 class Post extends React.Component {
   render(){
-    return (<View style={{width:300, height:'100%', margin:5, backgroundColor:'white',alignItems:'center',paddingTop:5,paddingLeft:2.5,paddingBottom:5,paddingRight:2.5}}>
-    <Image style={{width:'100%', height:'100%',borderRadius:5}} source={this.props.img}/>
-    <View style={{position:'absolute',left:2.5,right:2.5,top:5,bottom:5,alignItems:'center',justifyContent:'center',borderRadius:5,backgroundColor:'rgba(0,0,0,.3)'}}><Text style= {styles.name}>{this.props.recipename}</Text></View>
-    </View>)
+    if(this.props.isFavorite) {
+      return (<View style={{width:300, height:'100%', margin:5, backgroundColor:'white',alignItems:'center',paddingTop:5,paddingLeft:2.5,paddingBottom:5,paddingRight:2.5}}>
+         <Image style={{width:'100%', height:'100%',borderRadius:5}} source={this.props.img}/>
+      <View style={{position:'absolute',left:2.5,right:2.5,top:5,bottom:5,alignItems:'center',justifyContent:'center',borderRadius:5,backgroundColor:'rgba(0,0,0,.3)'}}><Text style= {styles.name}>{this.props.recipename}</Text></View>
+      </View>
+      )
+    }
+
+    return (<View style={{width:130, height:'100%', margin:2.5, backgroundColor:'white',alignItems:'center',paddingTop:0,paddingLeft:2.5,paddingBottom:5,paddingRight:2.5}}>
+       <Image style={{width:'100%', height:'100%',borderRadius:5}} source={this.props.img}/>
+    <View style={{position:'absolute',left:0.5,right:0.5,top:0,bottom:5,alignItems:'center',justifyContent:'center',borderRadius:5,backgroundColor:'rgba(0,0,0,.3)'}}><Text style= {styles.name}>{this.props.recipename}</Text></View>
+    </View>
+    )
   }
 }
 
@@ -54,9 +64,29 @@ class Favorites extends React.Component {
     <FlatList
     horizontal={true}
     data={dataHERE}
-    renderItem={({item})=> <Post img={item.image} recipename={item.name}/>}
+    renderItem={({item})=> <Post isFavorite={true} img={item.image} recipename={item.name}/>}
     />
     </View>
+    );
+  }
+}
+
+class RecentSearched extends React.Component {
+  render () {
+    let dataHERE = [
+      {"image": require('../../../images/category/brazilian.jpg')},
+      {"image": require('../../../images/category/candy.jpg')},
+      {"image": require('../../../images/category/chicken.jpg')},
+      {"image": require('../../../images/category/french.jpg')}
+    ]
+    return (
+      <View style={styles.recentsearched}>
+      <FlatList
+      horizontal={true}
+      data={dataHERE}
+      renderItem={({item})=> <Post isFavorite={false} img={item.image}/>}
+      />
+      </View>
     );
   }
 }
@@ -77,9 +107,6 @@ footer: {
   flex:2,
   borderTopWidth:1,
   borderTopColor:'#999999',
-  marginLeft:5,
-  marginRight:5,
-  padding:5,
   alignSelf:'stretch',
   backgroundColor:'#FCFCFC'
 },
@@ -100,5 +127,10 @@ name: {
   fontSize:26,
   fontWeight:'bold',
   color:'white',
+},
+recentsearched: {
+  flex:3,
+  marginBottom:-20
 }
+
 });
