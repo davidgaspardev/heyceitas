@@ -1,3 +1,6 @@
+/**
+ * @author raul.r.ze@hotmail.com (Raul Zeferino)
+ */
 import React from 'react';
 import { StyleSheet, View, Text,Image, FlatList } from 'react-native';
 
