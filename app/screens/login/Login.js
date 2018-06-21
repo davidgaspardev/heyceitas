@@ -1,9 +1,59 @@
+/**
+ * @author davidgaspar.dev@gmail.com (David Gaspar)
+ */
+
 import React from 'react';
-import { TouchableOpacity, Dimesions,  StyleSheet, Image, View } from 'react-native';
+import Account from '../../config/Account'
+import Communication from '../../config/Communication'
+import { TouchableOpacity, Dimesions,  StyleSheet, AsyncStorage, Image, View } from 'react-native';
+import { GoogleSignin } from 'react-native-google-signin';
 
 export default class Login extends React.Component {
 
+  /** @constructor */
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      hasAccount: true,
+      account: new Account(),
+      communication: new Communication()
+    }
+
+    this._hasLogin()
+  }
+
+  _hasLogin() {
+
+    if(this.state.account.hasAccount()) {
+      this.props.navigation.navigate('Logged')
+    }
+
+    this.setState({
+      hasAccount: false
+    })
+
+  }
+
+  componentWillMount() {
+
+    GoogleSignin.hasPlayServices({
+      autoResolve: true
+    })
+
+    GoogleSignin.configure({
+      webClientId: '635512216388-jj8fbcsp7lsujbfdrietb220g4s3ndlk.apps.googleusercontent.com'
+    })
+
+  }
+
+  /** @return Native View (JSX)  */
   render() {
+
+    if(this.state.hasAccount) {
+
+      return(<View></View>)
+    }
 
     return(
       <View style={styles.container}>
@@ -23,7 +73,8 @@ export default class Login extends React.Component {
 
           { /* Button to Google */ }
           <TouchableOpacity onPress={
-            () => this.props.navigation.navigate('Logged')
+            //() => this.props.navigation.navigate('Logged')
+            this.handleSigninGoogle.bind(this)
           }>
             <Image source={require('../../images/login/google.png')} style={styles.loginButton} />
           </TouchableOpacity>
@@ -32,6 +83,18 @@ export default class Login extends React.Component {
 
       </View>
     );
+  }
+
+  handleSigninGoogle() {
+    GoogleSignin.signIn().then((accountG) => {
+
+      this.state.communication.login(accountG, (account) => {
+        this.state.account.setAccount(account, () => this.props.navigation.navigate('Logged'))
+      })
+
+    }).catch((err) => {
+      console.log('WRONG SIGNIN', err)
+    }).done()
   }
 }
 

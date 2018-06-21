@@ -77,7 +77,7 @@ export default Categorys = [
 
   // Countries
   {
-    "name": "Brasileiras",
+    "name": "Brasileira",
     "image": require("../images/category/brazilian.jpg"),
     "event": {
       "category": "brazilian"
@@ -87,7 +87,7 @@ export default Categorys = [
     "name": "Francesa",
     "image": require("../images/category/french.jpg"),
     "event": {
-      "category": "japanese"
+      "category": "french"
     }
   },
   {

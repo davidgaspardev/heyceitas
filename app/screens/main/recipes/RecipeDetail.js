@@ -1,8 +1,6 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Dimensions, ScrollView, Image, View, Text } from 'react-native'
 
-import Button from './components/ReturnButton'
-
 export default class RecipeDetail extends React.Component {
 
   constructor(props) {
@@ -23,7 +21,7 @@ export default class RecipeDetail extends React.Component {
         { /* Background (WallPaper) */ }
         <Image source={{ uri: this.state.recipe.image }} style={styles.background}/>
 
-        <ScrollView style={[ styles.container, { backgroundColor: 'rgba( 0, 0, 0, .5)' } ]}>
+        <ScrollView style={[ styles.container, { backgroundColor: 'rgba( 0, 0, 0, .5)', paddingBottom: 100 } ]}>
 
           <View style={[styles.container, { padding: 5 }]}>
 
@@ -39,9 +37,6 @@ export default class RecipeDetail extends React.Component {
 
         </ScrollView>
 
-        { /* Button to Back */ }
-        <Button event={ () => this.props.navigation.goBack() } />
-
       </View>
     )
   }
@@ -54,7 +49,7 @@ class Name extends React.Component {
     const { height } = Dimensions.get('window')
 
     return(
-      <View style={[ styles.centerChild, { height: height - 50, alignSelf: 'stretch'}]}>
+      <View style={[ styles.centerChild, { height: (height / 2) + 100 , alignSelf: 'stretch'}]}>
         <Text style={styles.recipeName} >{this.props.name}</Text>
       </View>
     )
@@ -103,7 +98,7 @@ class Ingredients extends React.Component {
               break;
             }
 
-            return <Item isIngredient={true} index={(index + 1)} name={name} number={item.number} unity={item.unity} />
+            return <Item isIngredient={true} index={(index + 1) + 'º'} name={name} number={item.number} unity={item.unity} />
           })
         }
       </View>

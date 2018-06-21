@@ -9,7 +9,7 @@ import Login from '../screens/login/Login';
 import Home from '../screens/main/home/Home';
 
 // Main Activity
-import Pantry from '../screens/main/Pantry';
+import Pantry from '../screens/main/pantry/Pantry';
 import Categorys from '../screens/main/recipes/Categorys';
 import Recipes from '../screens/main/recipes/Recipes';
 import RecipeDetail from '../screens/main/recipes/RecipeDetail';
@@ -33,51 +33,6 @@ const RecipesRoute = StackNavigator({
   },
   headerMode: 'none'
 })
-
-/*const CategoryRoute = TabNavigator({
-  Others: {
-    screen: RecipesRoute(DataOthers),
-    navigationOptions: {
-      title: 'Outros'
-    }
-  },
-  Fits: {
-    screen: RecipesRoute(DataFits),
-    navigationOptions: {
-      title: 'Fits'
-    }
-  },
-  Vegans: {
-    screen: RecipesRoute(DataVegans),
-    navigationOptions: {
-      title: 'Veganos'
-    }
-  },
-  Countries: {
-    screen: RecipesRoute(DataCountries),
-    navigationOptions: {
-      title: 'Paises'
-    }
-  }
-},
-// Customization (TabNavigator)
-{
-  swipeEnabled: false,
-  tabBarOptions: {
-    inactiveTintColor: '#555555',
-    activeTintColor: '#952115',
-    style: {
-      backgroundColor: 'white'
-    },
-    labelStyle: {
-      fontSize: 12,
-      fontWeight: 'bold'
-    },
-    indicatorStyle: {
-      opacity: 0
-    }
-  }
-})*/
 
 const MainRoute = TabNavigator({
   Home: {
@@ -148,7 +103,7 @@ const MainRoute = TabNavigator({
     showIcon: true,
     showLabel: false,
     style: {
-      backgroundColor: '#952115'
+      backgroundColor: '#b22214'
     },
     indicatorStyle: {
       opacity: 0

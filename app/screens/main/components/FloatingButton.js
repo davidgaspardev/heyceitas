@@ -1,14 +1,14 @@
 import React from 'react'
 import { TouchableOpacity, StyleSheet, Image } from 'react-native'
 
-export default class ReturnButton extends React.Component {
+export default class FloatingButton extends React.Component {
 
   render() {
 
     return(
       <TouchableOpacity onPress={ this.props.event } style={ [ styles.back, styles.centerChild ] }>
 
-        <Image source={require('../../../../images/icons/back.png')} style={{ width: 20, height: 20 }} />
+        <Image source={this.props.icon} style={{ width: 20, height: 20 }} />
 
       </TouchableOpacity>
     )

@@ -1,6 +1,12 @@
+/**
+ *
+ * @author davidgaspar.dev@gmail.com (David Gaspar)
+ */
+
 import React from 'react'
 import { TouchableOpacity, ActivityIndicator, Dimensions, StyleSheet, FlatList, Image, View, Text } from 'react-native'
-import Button from './components/ReturnButton'
+
+import Communication from '../../../config/Communication'
 
 export default class Recipes extends React.Component {
 
@@ -18,7 +24,8 @@ export default class Recipes extends React.Component {
 
   componentWillMount() {
 
-    this._getRecipes('http://18.222.51.173:8080/recipes?category=' + this.state.category)
+    //this._getRecipes('http://18.222.51.173:8080/recipes?category=' + this.state.category)
+    new Communication().getRecipes(this.state.category, result => this._insertItems(result))
 
   }
 
@@ -39,21 +46,27 @@ export default class Recipes extends React.Component {
     return (
       <View style={styles.container}>
 
-        <Button event={ () => this.props.navigation.goBack() }/>
-
         <FlatList
           data={this.state.list}
           numColumns={2}
-          renderItem={({item}) => <RecipeItem
-            img={item.image}
-            name={item.name}
-            onpress={() => this.props.navigation.navigate('RecipeDetail', { recipe: item }) }
-          />}
-          keyExtractor={({item, index}) => index}
+          initialNumToRender={6}
+          renderItem={({item}) => this._renderItem(item)}
+          removeClippedSubviews
         />
 
       </View>
     )
+  }
+
+  _renderItem(item) {
+    return <RecipeItem name={item.name} img={item.image} onpress={() => this.props.navigation.navigate('RecipeDetail', { recipe: item})}/>
+  }
+
+  _insertItems(list) {
+    this.setState({
+      isLoading: false,
+      list: list
+    })
   }
 
   async _getRecipes(url) {
@@ -73,7 +86,7 @@ export default class Recipes extends React.Component {
   }
 }
 
-class RecipeItem extends React.Component {
+class RecipeItem extends React.PureComponent {
 
 
   render() {
@@ -111,21 +124,23 @@ const styles = StyleSheet.create({
   recipeImage: {
     flex: 1,
     //borderRadius: 5,
-    //margin: 1
+    margin: 1
   },
   recipeLegende: {
     position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
+    top: 1,
+    right: 1,
+    bottom: 1,
+    left: 1,
+    borderRadius: 5,
     backgroundColor: 'rgba( 0, 0, 0, .3)',
     justifyContent: 'center'
   },
   recipeText: {
     color: 'white',
-    fontFamily: 'umbrella',
-    fontSize: 30,
+    //fontFamily: 'umbrella',
+    fontSize: 24,
+    fontWeight: 'bold',
     padding: 5,
     textAlign: 'center'
   }

@@ -25,18 +25,17 @@ export default class Category extends React.Component {
     return(
       <View style={styles.container}>
 
-        <Header />
-
         <FlatList
           data={this.state.list}
-          renderItem={({item}) => <CategoryItem
-            src={item.image}
-            title={item.name}
-            onpress={() => this.props.navigation.navigate('Recipes', item.event)}/>}
+          renderItem={({item}) => this._renderItem(item)}
         />
 
       </View>
     );
+  }
+
+  _renderItem(item) {
+    return <CategoryItem title={item.name} src={item.image} onpress={() => this.props.navigation.navigate('Recipes', item.event)}/>
   }
 }
 
