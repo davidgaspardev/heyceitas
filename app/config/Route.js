@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabNavigator, StackNavigator } from 'react-navigation';
+import { createTabNavigator, createStackNavigator } from 'react-navigation';
 import { Image } from 'react-native';
 
 import List from './Data';
@@ -13,9 +13,9 @@ import Pantry from '../screens/main/pantry/Pantry';
 import Categorys from '../screens/main/recipes/Categorys';
 import Recipes from '../screens/main/recipes/Recipes';
 import RecipeDetail from '../screens/main/recipes/RecipeDetail';
-import Settings from '../screens/main/Settings';
+import Settings from '../screens/main/settings/Settings';
 
-const RecipesRoute = StackNavigator({
+const RecipesRoute = createStackNavigator({
   Category: {
     screen: Categorys
   },
@@ -34,7 +34,7 @@ const RecipesRoute = StackNavigator({
   headerMode: 'none'
 })
 
-const MainRoute = TabNavigator({
+const MainRoute = createTabNavigator({
   Home: {
     screen: Home,
     navigationOptions: {
@@ -111,7 +111,7 @@ const MainRoute = TabNavigator({
   }
 });
 
-const LoginRoute = StackNavigator({
+const LoginRoute = createStackNavigator({
   Login: {
     screen: Login
   },

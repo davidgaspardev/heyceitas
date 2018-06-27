@@ -11,7 +11,7 @@ import Communication from '../../../config/Communication'
 export default class Recipes extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
 
     const { navigation } = this.props;
 
@@ -19,13 +19,12 @@ export default class Recipes extends React.Component {
       isLoading: true,
       category: navigation.state.params.category,
       list: []
-    }
+    };
   }
 
   componentWillMount() {
 
-    //this._getRecipes('http://18.222.51.173:8080/recipes?category=' + this.state.category)
-    new Communication().getRecipes(this.state.category, result => this._insertItems(result))
+    new Communication().getRecipes(this.state.category, result => this._insertItems(result));
 
   }
 
@@ -39,7 +38,7 @@ export default class Recipes extends React.Component {
             height: 150
           }}/>
         </View>
-      )
+      );
     }
 
 
@@ -55,18 +54,18 @@ export default class Recipes extends React.Component {
         />
 
       </View>
-    )
+    );
   }
 
   _renderItem(item) {
-    return <RecipeItem name={item.name} img={item.image} onpress={() => this.props.navigation.navigate('RecipeDetail', { recipe: item})}/>
+    return <RecipeItem name={item.name} img={item.image} onpress={() => this.props.navigation.navigate('RecipeDetail', { recipe: item })}/>
   }
 
   _insertItems(list) {
     this.setState({
       isLoading: false,
       list: list
-    })
+    });
   }
 
   async _getRecipes(url) {
@@ -77,7 +76,7 @@ export default class Recipes extends React.Component {
       this.setState({
         isLoading: false,
         list: await response.json()
-      })
+      });
 
     }catch(e) {
       console.log(e.message);
@@ -103,11 +102,11 @@ class RecipeItem extends React.PureComponent {
         </View>
 
       </TouchableOpacity>
-    )
+    );
   }
 }
 
-const { width } = Dimensions.get('window')
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {

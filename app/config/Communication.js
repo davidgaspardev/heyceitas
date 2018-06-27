@@ -2,10 +2,10 @@
 * @author davidgaspar.dev@gmail.com (David Gaspar)
 */
 
-import React from 'react'
-import Account from './Account'
-import { AsyncStorage } from 'react-native'
-import { LOG_TAG, OBJ_COMUNIC } from './Log'
+import React from 'react';
+import Account from './Account';
+import { AsyncStorage } from 'react-native';
+import { LOG_TAG_OK, LOG_TAG_ER, OBJ_COMUNIC } from './Log';
 
 export default class Communication {
 
@@ -21,7 +21,7 @@ export default class Communication {
         category: '?category='
       },
       method: ['GET', 'POST']
-    }
+    };
 
   }
 
@@ -34,17 +34,17 @@ export default class Communication {
         headers: {
           'User-Agent': 'HEYceitas 1.0v'
         }
-      }
+      };
 
       if(typeof(options) == 'object') {
-        protocol.headers.concat(options)
+        protocol.headers.concat(options);
       }
 
       if(typeof(body) == 'string'){
-        protocol.concat({ body: body })
+        protocol.concat({ body: body });
       }
 
-      return protocol
+      return protocol;
 
     }
 
@@ -54,33 +54,38 @@ export default class Communication {
 
     try {
 
-      const url = `${this.props.address}${this.props.path.login}`
-      LOG_TAG(OBJ_COMUNIC, `(fetch) url: ${url}`)
+      const url = `${this.props.address}${this.props.path.login}`;
+      LOG_TAG_OK(OBJ_COMUNIC, `(fetch) url: ${url}`);
+
+      account = Account.toString(account);
 
       const protocol = {
         method: this.props.method[1], //method POST
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          'accept': 'application/json',
+          'content-type': 'application/json'
         },
+        //@value string
         body: account
-      }
-      LOG_TAG(OBJ_COMUNIC, `(fetch) HTTP protocol: ${JSON.stringify(protocol)}`)
+      };
+      LOG_TAG_OK(OBJ_COMUNIC, `(fetch) HTTP protocol: ${JSON.stringify(protocol)}`);
 
-      let response = await fetch(url, protocol)
+      let response = await fetch(url, protocol);
 
       if(response.ok) {
 
-        let success = await response.json()
-        callback(success)
+        let success = await response.json();
+        callback(success);
 
       }else {
 
-        LOG_TAG(OBJ_COMUNIC, `(fetch) failed: ${response.status} (Status-Code)`)
+        LOG_TAG_OK(OBJ_COMUNIC, `(fetch) failed: ${response.status} (Status-Code)`);
 
       }
 
     }catch(err) {
+
+      LOG_TAG_ER(OBJ_COMUNIC, `(fetch) error: ${err}`);
 
     }
 
@@ -89,12 +94,12 @@ export default class Communication {
 
   async getRecipes(category, callback) {
 
-    LOG_TAG(OBJ_COMUNIC, `category: ${category}`)
+    LOG_TAG_OK(OBJ_COMUNIC, `category: ${category}`);
 
     try {
 
-      const url = `${this.props.address}${this.props.path.recipes}${this.props.query.category}${category}`
-      LOG_TAG(OBJ_COMUNIC, `(fetch) url: ${url}`)
+      const url = `${this.props.address}${this.props.path.recipes}${this.props.query.category}${category}`;
+      LOG_TAG_OK(OBJ_COMUNIC, `(fetch) url: ${url}`);
 
       const protocol = {
         method: this.props.method[0], // method GET
@@ -104,15 +109,17 @@ export default class Communication {
           'User-Agent': 'HEYceitas 1.0v'
           //'Authorization': JSON.parse(account).idToken
         }
-      }
-      LOG_TAG(OBJ_COMUNIC, `(fetch) HTTP protocol: ${JSON.stringify(protocol)}`)
+      };
+      LOG_TAG_OK(OBJ_COMUNIC, `(fetch) HTTP protocol: ${JSON.stringify(protocol)}`);
 
-      let response     = await fetch(url, protocol)
-      let responseJSON = await response.json()
+      let response     = await fetch(url, protocol);
+      let responseJSON = await response.json();
 
-      callback(responseJSON)
+      callback(responseJSON);
 
     }catch(err) {
+
+      LOG_TAG_ER(OBJ_COMUNIC, `(fetch) error: ${err}`);
 
     }
   }

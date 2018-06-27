@@ -1,16 +1,30 @@
-import React from 'react'
-import { StyleSheet, TouchableOpacity, Dimensions, ScrollView, Image, View, Text } from 'react-native'
+/**
+ *
+ * @author davidgaspar.dev@gmail.com (David Gaspar)
+ */
+
+ // React/React-Native is an open source JavaScript library for creating user interfaces
+import React from 'react';
+import { StyleSheet, TouchableOpacity, Dimensions, ScrollView, Image, View, Text } from 'react-native';
+
+import DataBase from '../../../config/DataBase';
 
 export default class RecipeDetail extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
 
-    const { state } = this.props.navigation
+    // Get datas of the previous screen
+    const { recipe } = this.props.navigation.state.params;
 
+    // initilizing state
     this.state = {
-      recipe: state.params.recipe
-    }
+      db: new DataBase('recipes'),
+      recipe: recipe,
+      favorite: require('../../../images/icons/not-favorite.png'),
+      star: false
+    };
+
   }
 
   render() {
@@ -22,6 +36,10 @@ export default class RecipeDetail extends React.Component {
         <Image source={{ uri: this.state.recipe.image }} style={styles.background}/>
 
         <ScrollView style={[ styles.container, { backgroundColor: 'rgba( 0, 0, 0, .5)', paddingBottom: 100 } ]}>
+
+          <TouchableOpacity style={styles.favorite} onPress={ this._recipeAddToFavorites.bind(this) }>
+            <Image source={this.state.favorite} style={{ width: 24, height: 24}}/>
+          </TouchableOpacity>
 
           <View style={[styles.container, { padding: 5 }]}>
 
@@ -38,7 +56,41 @@ export default class RecipeDetail extends React.Component {
         </ScrollView>
 
       </View>
-    )
+    );
+  }
+
+  componentDidMount() {
+    const { db, recipe } = this.state;
+
+    db.hasData(recipe, (res) => {
+      if(res) this.setState({
+        favorite: require('../../../images/icons/yes-favorite.png'),
+        star: true
+      });
+    });
+
+    //db.setRemove();
+
+  }
+
+  _recipeAddToFavorites() {
+    const { db, star, recipe } = this.state;
+
+    if(star) {
+
+      db.setRemove(recipe, () => this.setState({
+        favorite: require('../../../images/icons/not-favorite.png'),
+        star: false
+      }));
+
+    }else {
+
+      db.setData(this.state.recipe, () => this.setState({
+        favorite: require('../../../images/icons/yes-favorite.png'),
+        star: true
+      }));
+
+    }
   }
 }
 
@@ -46,13 +98,13 @@ class Name extends React.Component {
 
   render() {
 
-    const { height } = Dimensions.get('window')
+    const { height } = Dimensions.get('window');
 
     return(
-      <View style={[ styles.centerChild, { height: (height / 2) + 100 , alignSelf: 'stretch'}]}>
+      <View style={[ styles.centerChild, { height: (height / 3) + 150, alignSelf: 'stretch'}]}>
         <Text style={styles.recipeName} >{this.props.name}</Text>
       </View>
-    )
+    );
   }
 }
 
@@ -102,7 +154,7 @@ class Ingredients extends React.Component {
           })
         }
       </View>
-    )
+    );
   }
 }
 
@@ -128,7 +180,7 @@ class Preparation extends React.Component {
           })
         }
       </View>
-    )
+    );
   }
 }
 
@@ -136,6 +188,7 @@ class Item extends React.Component {
 
   _isIngredient = (isIt) => {
     if(isIt) {
+
       return (
         <View style={styles.itemBody} >
           <View style={ styles.itemName }>
@@ -149,15 +202,18 @@ class Item extends React.Component {
 
           </View>
         </View>
-      )
+      );
+
     }else{
+
       return(
         <View style={[ styles.itemName, { borderTopRightRadius: 5, borderBottomRightRadius: 5 } ]}>
 
           <Text style={{ color: 'white' }} >{ this.props.name }</Text>
 
         </View>
-      )
+      );
+
     }
   }
 
@@ -183,7 +239,7 @@ class Item extends React.Component {
         </View>
 
       </View>
-    )
+    );
   }
 
 }
@@ -194,6 +250,15 @@ const styles = StyleSheet.create({
   centerChild: {
     alignItems: 'center',
     justifyContent: 'center'
+  },
+
+  // favorite
+  favorite: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    width: 24,
+    height: 24
   },
 
   // Container Style
@@ -275,4 +340,4 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 5
   }
 
-})
+});

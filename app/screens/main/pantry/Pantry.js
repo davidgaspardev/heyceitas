@@ -6,57 +6,56 @@
  * @file Pantry.js
  */
 
+// React/React-Native is an open source JavaScript library for creating user interfaces
 import React from 'react';
-import { StyleSheet, FlatList, View } from 'react-native'
+import { StyleSheet, FlatList, View } from 'react-native';
 
-import DataBase from '../../../config/DataBase'
-import ButtonAdd from '../components/FloatingButton'
-import { Header, Ingredient, IngredientAdd } from './Components'
-import { LOG_SCREEN, PANTRY_SCREEN, CONSTRUCTOR, RENDER } from '../../../config/Log'
+import DataBase from '../../../config/DataBase';
+import ButtonAdd from '../components/FloatingButton';
+import { Header, Ingredient, IngredientAddOrDetail } from './Components';
+import { LOG_SCREEN, PANTRY_SCREEN, CONSTRUCTOR, RENDER, POS_RENDER } from '../../../config/Log';
 
-
+/** PANTRY SCREEN */
 export default class Pantry extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      db: new DataBase(),
+      db: new DataBase('Pantry'),
       ingredients: null,
+      newIngredient: { name: null, number: null, unity: null },
       modalVisible: false,
-      newIngredient: {
-        name: '',
-        number: 0,
-        unity: ''
-      }
-    }
+      isDetail: false,
+      detail: { name: null, number: null, unity: null }
+    };
 
   }
 
   set _name(name) {
     this.setState((previousState) => {
-      previousState.newIngredient.name = name
-      return { newIngredient: previousState.newIngredient }
-    })
+      previousState.newIngredient.name = name;
+      return { newIngredient: previousState.newIngredient };
+    });
   }
 
   set _number(number) {
     this.setState((previousState) => {
-      previousState.newIngredient.number = number
-      return { newIngredient: previousState.newIngredient }
-    })
+      previousState.newIngredient.number = number;
+      return { newIngredient: previousState.newIngredient };
+    });
   }
 
   set _unity(unity) {
     this.setState((previousState) => {
-      previousState.newIngredient.unity = unity
-      return { newIngredient: previousState.newIngredient }
+      previousState.newIngredient.unity = unity;
+      return { newIngredient: previousState.newIngredient };
     })
   }
 
   render() {
 
-    LOG_SCREEN(PANTRY_SCREEN, RENDER, 'Started/Update')
+    LOG_SCREEN(PANTRY_SCREEN, RENDER, 'Started/Update');
 
     return (
       <View style={{
@@ -65,14 +64,20 @@ export default class Pantry extends React.Component {
         backgroundColor: 'white'
       }}>
 
-        <IngredientAdd
-          visible={this.state.modalVisible}
+        <IngredientAddOrDetail
+          isDetail={this.state.isDetail}
+          name={this.state.name}
+          number={this.state.number}
+          unity={this.state.unity}
+
+          visible={ this.state.modalVisible }
           onpress={ this._addIngredient.bind(this) }
+          eventBack={ () => this.setState({ modalVisible: false }) }
 
           //TextInput (onChangeText)
-          onChangeName={(text) => this._name = text}
-          onChangeNumber={(text) => this._number = text}
-          onChangeUnity={(text) => this._unity = text}
+          onChangeName={ (text) => this._name = text }
+          onChangeNumber={ (text) => this._number = text }
+          onChangeUnity={ (text) => this._unity = text }
         />
 
         <Header />
@@ -81,7 +86,7 @@ export default class Pantry extends React.Component {
           data={this.state.ingredients}
           numColumns={3}
           renderItem={({item}) => this._insertIngredient(item) }
-          keyExtractor={(item) => item}
+          keyExtractor={(item, index) => item._id}
         />
 
         <ButtonAdd
@@ -94,35 +99,62 @@ export default class Pantry extends React.Component {
   }
 
   componentDidMount() {
+    const { db } = this.state;
 
-    this.state.db.getDatas(datas => this.setState({
+    LOG_SCREEN(PANTRY_SCREEN, POS_RENDER, 'Started/Update')
+
+    //this.state.db.setRemove();
+
+    db.getDatas(datas => this.setState({
       ingredients: datas
-   }))
+   }));
 
   }
 
 
   _insertIngredient(item) {
-    return <Ingredient name={item.name} quantity={item.number}/>
+    return <Ingredient name={item.name} number={item.number} unity={item.unity} onpress={() => {
+      this.setState(({detail}) => {
+
+      });
+    }}/>
+  }
+
+  _detailIngredient() {
+    this.modalVisible(false, )
   }
 
   _addIngredient() {
+    const { db, newIngredient } = this.state;
 
-    this._setModalVisible(false)
+    this._setModalVisible(false);
 
-    if(this.state.newIngredient != null){
+    if(newIngredient != null){
 
-      this.state.db.setData(this.state.newIngredient, ingredients => {
+      db.setData(newIngredient, ingredients => {
         this.setState({
           ingredients: ingredients,
-          newIngredient: null
-        })
-      })
+          newIngredient: { name: null, number: null, unity: null }
+        });
+      });
     }
   }
 
-  _setModalVisible(visible) {
-    this.setState({modalVisible: visible});
+  _setModalVisible(visible, detail, item) {
+
+    this.setState(previousState => {
+      let newState = {
+        modalVisible: visible
+      }
+
+      if(typeof(detail) == 'undefined') newState.isDetail = false;
+      else {
+        newState.isDetail = detail;
+        if(detail) newState.detail = item;
+      }
+
+      return newState;
+    });
   }
 
 }

@@ -3,8 +3,8 @@
  */
 
 import React from 'react';
-import Account from '../../config/Account'
-import Communication from '../../config/Communication'
+import Account from '../../config/Account';
+import Communication from '../../config/Communication';
 import { TouchableOpacity, Dimesions,  StyleSheet, AsyncStorage, Image, View } from 'react-native';
 import { GoogleSignin } from 'react-native-google-signin';
 
@@ -12,26 +12,33 @@ export default class Login extends React.Component {
 
   /** @constructor */
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       hasAccount: true,
       account: new Account(),
       communication: new Communication()
-    }
+    };
 
-    this._hasLogin()
+    this._hasLogin();
+
   }
 
   _hasLogin() {
 
-    if(this.state.account.hasAccount()) {
-      this.props.navigation.navigate('Logged')
-    }
+    this.state.account.hasAccount(res => {
 
-    this.setState({
-      hasAccount: false
-    })
+      console.log("response: "+ res)
+
+      if(res) {
+        this.props.navigation.navigate('Logged');
+      }
+
+      this.setState({
+        hasAccount: false
+      });
+
+    });
 
   }
 
@@ -39,11 +46,11 @@ export default class Login extends React.Component {
 
     GoogleSignin.hasPlayServices({
       autoResolve: true
-    })
+    });
 
     GoogleSignin.configure({
       webClientId: '635512216388-jj8fbcsp7lsujbfdrietb220g4s3ndlk.apps.googleusercontent.com'
-    })
+    });
 
   }
 
@@ -52,7 +59,8 @@ export default class Login extends React.Component {
 
     if(this.state.hasAccount) {
 
-      return(<View></View>)
+      return(<View></View>);
+
     }
 
     return(
@@ -89,12 +97,19 @@ export default class Login extends React.Component {
     GoogleSignin.signIn().then((accountG) => {
 
       this.state.communication.login(accountG, (account) => {
-        this.state.account.setAccount(account, () => this.props.navigation.navigate('Logged'))
-      })
+
+        this.state.account.setAccount(account,
+          () => this.props.navigation.navigate('Logged')
+        );
+
+      });
 
     }).catch((err) => {
+
       console.log('WRONG SIGNIN', err)
-    }).done()
+
+    }).done();
+    
   }
 }
 

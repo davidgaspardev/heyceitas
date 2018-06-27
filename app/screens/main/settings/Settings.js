@@ -1,4 +1,11 @@
+/**
+ *
+ *
+ * @author davidgaspar.dev@gmail.com (David Gaspar)
+ */
+
 import React from 'react';
+import Account from '../../../config/Account';
 import { StyleSheet, AsyncStorage, Image, View, Text } from 'react-native';
 
 const LOG_TAG = '[ SETTINGS | Component ] '
@@ -11,6 +18,7 @@ export default class Settings extends React.Component {
     console.log(LOG_TAG + 'constructor()')
 
     this.state = {
+      account: new Account(),
       user: []
     }
 
@@ -20,7 +28,8 @@ export default class Settings extends React.Component {
 
   async getProfile() {
     try {
-      await AsyncStorage.getItem('@User', (err, result) => {
+
+      await AsyncStorage.getItem('@ccount', (err, result) => {
 
         console.log(LOG_TAG + ' profile: ' + result)
 
