@@ -1,4 +1,5 @@
 /**
+ * List of requested receipts from the HeyServer server of the given category with the HTTP protocol.
  *
  * @author davidgaspar.dev@gmail.com (David Gaspar)
  */
@@ -10,11 +11,15 @@ import Communication from '../../../config/Communication'
 
 export default class Recipes extends React.Component {
 
+  // @constructor state initialization
+  // @param property
   constructor(props) {
     super(props);
 
+    // Array of obejct destructuring
     const { navigation } = this.props;
 
+    // State initialization
     this.state = {
       isLoading: true,
       category: navigation.state.params.category,
@@ -24,12 +29,17 @@ export default class Recipes extends React.Component {
 
   componentWillMount() {
 
+    // Request recipes with HTTP protocol
     new Communication().getRecipes(this.state.category, result => this._insertItems(result));
 
   }
 
+
   render() {
-    if (this.state.isLoading) {
+    // Array of obejct destructuring
+    const { isLoading, list } = this.state;
+
+    if (isLoading) {
       return (
         <View style={styles.container}>
           <Image source={ require('../../../images/gif/loading.gif') }
@@ -46,7 +56,7 @@ export default class Recipes extends React.Component {
       <View style={styles.container}>
 
         <FlatList
-          data={this.state.list}
+          data={list}
           numColumns={2}
           initialNumToRender={6}
           renderItem={({item}) => this._renderItem(item)}
@@ -58,7 +68,7 @@ export default class Recipes extends React.Component {
   }
 
   _renderItem(item) {
-    return <RecipeItem name={item.name} img={item.image} onpress={() => this.props.navigation.navigate('RecipeDetail', { recipe: item })}/>
+    return <RecipeItem name={item.name} img={item.image} event={() => this.props.navigation.navigate('RecipeDetail', { recipe: item })}/>
   }
 
   _insertItems(list) {
@@ -68,43 +78,25 @@ export default class Recipes extends React.Component {
     });
   }
 
-  async _getRecipes(url) {
-
-    try {
-      var response = await fetch(url);
-
-      this.setState({
-        isLoading: false,
-        list: await response.json()
-      });
-
-    }catch(e) {
-      console.log(e.message);
-    }
-
-  }
 }
 
-class RecipeItem extends React.PureComponent {
+/**
+ * Functional Stateless Components (RecipeItem).
+ * Return JSX
+ */
+const RecipeItem = ({img, name, event}) => (
+  <TouchableOpacity  style={styles.recipe} onPress={event}>
 
+    <Image source={{ uri: img }} style={styles.recipeImage}/>
 
-  render() {
+    <View style={styles.recipeLegende}>
 
-    return(
-      <TouchableOpacity  style={styles.recipe} onPress={this.props.onpress}>
+      <Text style={styles.recipeText}>{name}</Text>
 
-        <Image source={{ uri: this.props.img }} style={styles.recipeImage}/>
+    </View>
 
-        <View style={styles.recipeLegende}>
-
-          <Text style={styles.recipeText}>{this.props.name}</Text>
-
-        </View>
-
-      </TouchableOpacity>
-    );
-  }
-}
+  </TouchableOpacity>
+);
 
 const { width } = Dimensions.get('window');
 

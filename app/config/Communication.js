@@ -1,4 +1,5 @@
 /**
+*
 * @author davidgaspar.dev@gmail.com (David Gaspar)
 */
 
@@ -8,6 +9,8 @@ import { AsyncStorage } from 'react-native';
 import { LOG_TAG_OK, LOG_TAG_ER, OBJ_COMUNIC } from './Log';
 
 export default class Communication {
+
+  GET = 0;
 
   constructor() {
 
@@ -59,23 +62,25 @@ export default class Communication {
 
       account = Account.toString(account);
 
-      const protocol = {
-        method: this.props.method[1], //method POST
-        headers: {
-          'accept': 'application/json',
-          'content-type': 'application/json'
-        },
+      //const protocol = {
+      //  method: this.props.method[1], //method POST
+      //  headers: {
+      //    'accept': 'application/json',
+      //    'content-type': 'application/json'
+      //  },
         //@value string
-        body: account
-      };
+      //  body: account
+      //};
+      const protocol = this._HTTPprotocol(1, undefined, { body: account });
       LOG_TAG_OK(OBJ_COMUNIC, `(fetch) HTTP protocol: ${JSON.stringify(protocol)}`);
 
       let response = await fetch(url, protocol);
 
       if(response.ok) {
 
+        // Received 200 OK Status Code.
         let success = await response.json();
-        callback(success);
+        if(typeof(callback) == 'function') callback(success);
 
       }else {
 

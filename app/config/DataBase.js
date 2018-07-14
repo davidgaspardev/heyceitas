@@ -29,21 +29,16 @@ export default class DataBase {
   getDatas(callback) {
 
     this.props.db.find({}, (err, docs) => {
+    /**
+      * @param docs: type BJSON.
+      */
 
       // Order by index element
       docs = docs.sort((a, b) => a.date - b.date);
       LOG_TAG_OK(OBJ_DB, `datas: ${JSON.stringify(docs)}`);
 
       // Reload list to tha Pantry Screen
-      if(typeof(callback) == 'function') {
-
-        callback(docs);
-
-      }else {
-
-        return docs;
-
-      }
+      if(typeof(callback) == 'function') callback(docs);
 
     });
 
@@ -83,28 +78,54 @@ export default class DataBase {
 
   hasData(doc, callback) {
     const { db } = this.props;
+    if(doc != null) {
+      db.find({ _id: doc._id }, (err, docs) => {
+        /**
+         * @params docs
+         * @type object
+         */
+        if(err) {
+          LOG_TAG_ER(OBJ_DB, `(MongoDB) find method error: ${err}`);
+          throw err;
+        }
 
-    db.find({ _id: doc._id }, (err, docs) => {
-      /**
-       * @params docs
-       * @type object
-       */
-      if(err) {
-        LOG_TAG_ER(OBJ_DB, `(MongoDB) find method error: ${err}`);
-        throw err;
-      }
+        if(docs == '') {
 
-      if(docs == '') {
+          callback(false);
 
-        callback(false);
+        }else {
 
-      }else {
+          LOG_TAG_OK(OBJ_DB, `(MongoDB) find success: ${JSON.stringify(docs)}`);
 
-        LOG_TAG_OK(OBJ_DB, `(MongoDB) find success: ${JSON.stringify(docs)}`);
+          callback(true);
+        }
+      });
 
-        callback(true);
-      }
-    });
+    }else {
+
+      db.find({}, (err, docs) => {
+        /**
+         * @params docs
+         * @type object
+         */
+        if(err) {
+          LOG_TAG_ER(OBJ_DB, `(MongoDB) find method error: ${err}`);
+          throw err;
+        }
+
+        if(docs == '') {
+
+          callback(false);
+
+        }else {
+
+          LOG_TAG_OK(OBJ_DB, `(MongoDB) find success: ${JSON.stringify(docs)}`);
+
+          callback(true);
+        }
+      });
+
+    }
 
   }
 

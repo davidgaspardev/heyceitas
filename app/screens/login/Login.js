@@ -1,4 +1,6 @@
 /**
+ *
+ *
  * @author davidgaspar.dev@gmail.com (David Gaspar)
  */
 
@@ -6,6 +8,7 @@ import React from 'react';
 import Account from '../../config/Account';
 import Communication from '../../config/Communication';
 import { TouchableOpacity, Dimesions,  StyleSheet, AsyncStorage, Image, View } from 'react-native';
+
 import { GoogleSignin } from 'react-native-google-signin';
 
 export default class Login extends React.Component {
@@ -65,18 +68,18 @@ export default class Login extends React.Component {
 
     return(
       <View style={styles.container}>
-        <Image source={require('../../images/login/background.png')} style={styles.background}/>
+        <Image source={require('../../images/others/background.png')} style={styles.background}/>
 
         <View style={styles.login}>
 
           { /* Logo HEYceitas */ }
-          <Image source={require('../../images/login/logo.png')} style={styles.loginLogo}/>
+          <Image source={require('../../images/logos/logo.png')} style={styles.loginLogo}/>
 
           { /* Button to Facebook */ }
           <TouchableOpacity onPress={
             () => this.props.navigation.navigate('Logged')
           }>
-            <Image source={require('../../images/login/facebook.png')} style={styles.loginButton} />
+            <Image source={require('../../images/others/facebook.png')} style={styles.loginButton} />
           </TouchableOpacity>
 
           { /* Button to Google */ }
@@ -84,7 +87,7 @@ export default class Login extends React.Component {
             //() => this.props.navigation.navigate('Logged')
             this.handleSigninGoogle.bind(this)
           }>
-            <Image source={require('../../images/login/google.png')} style={styles.loginButton} />
+            <Image source={require('../../images/others/google.png')} style={styles.loginButton} />
           </TouchableOpacity>
 
         </View>
@@ -109,7 +112,7 @@ export default class Login extends React.Component {
       console.log('WRONG SIGNIN', err)
 
     }).done();
-    
+
   }
 }
 
@@ -134,9 +137,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba( 0, 0, 0, .3)'
   },
   loginLogo: {
-    width: 250,
-    height: 193,
-    marginBottom: 100
+    width: 200,
+    height: 154,
+    marginBottom: 50
   },
   loginButton: {
     width: 270,

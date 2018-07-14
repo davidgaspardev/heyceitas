@@ -11,10 +11,15 @@ import DataBase from '../../../config/DataBase';
 
 export default class RecipeDetail extends React.Component {
 
+  /**
+   * @constructor
+   * Get props of recipe & initialize the state
+   */
   constructor(props) {
     super(props);
 
     // Get datas of the previous screen
+    // JSON destructuring
     const { recipe } = this.props.navigation.state.params;
 
     // initilizing state
@@ -28,6 +33,8 @@ export default class RecipeDetail extends React.Component {
   }
 
   render() {
+    const { name, description, ingredients, preparation } = this.state.recipe;
+    const { height } = Dimensions.get('window');
 
     return(
       <View style={ styles.container }>
@@ -35,21 +42,24 @@ export default class RecipeDetail extends React.Component {
         { /* Background (WallPaper) */ }
         <Image source={{ uri: this.state.recipe.image }} style={styles.background}/>
 
+        { /* Context Parent */}
         <ScrollView style={[ styles.container, { backgroundColor: 'rgba( 0, 0, 0, .5)', paddingBottom: 100 } ]}>
 
+          { /* Button to add/remove of the favorite */ }
           <TouchableOpacity style={styles.favorite} onPress={ this._recipeAddToFavorites.bind(this) }>
             <Image source={this.state.favorite} style={{ width: 24, height: 24}}/>
           </TouchableOpacity>
 
+          { /*  */ }
           <View style={[styles.container, { padding: 5 }]}>
 
-            <Name name={this.state.recipe.name}/>
+            <Name name={name} height={ height }/>
 
-            <Description description={this.state.recipe.description} />
+            <Description description={description} />
 
-            <Ingredients ingredients={this.state.recipe.ingredients} />
+            <Ingredients ingredients={ingredients} />
 
-            <Preparation preparation={this.state.recipe.preparation}/>
+            <Preparation preparation={preparation}/>
 
           </View>
 
@@ -68,8 +78,6 @@ export default class RecipeDetail extends React.Component {
         star: true
       });
     });
-
-    //db.setRemove();
 
   }
 
@@ -94,97 +102,127 @@ export default class RecipeDetail extends React.Component {
   }
 }
 
-class Name extends React.Component {
+/**
+ * Functional Stateless Components (Name and Description).
+ * Does not return JSX
+ */
+const Name = ({ name, height }) => (
+  // View Parent/Container
+  React.createElement( View, { style: [ styles.centerChild, { height: height, alignSelf: 'stretch' } ] },
 
-  render() {
+    // View Child
+    React.createElement(Text, { style: styles.recipeName }, name ) // Text (React Native)
+  )
+);
 
-    const { height } = Dimensions.get('window');
+const Description = ({description}) => (
+  // View Parent (Native View)
+  React.createElement(View, { style: styles.recipeDescriptionBox },
 
-    return(
-      <View style={[ styles.centerChild, { height: (height / 3) + 150, alignSelf: 'stretch'}]}>
-        <Text style={styles.recipeName} >{this.props.name}</Text>
-      </View>
-    );
-  }
-}
+      // Views Children (Native Text)
+      // First child
+      React.createElement(Text, { style: styles.recipeDescriptionTitle }, 'Descrição' ),
+      // Second child
+      React.createElement(Text, { style: styles.recipeDescription}, description )
+    )
+);
 
-class Description extends React.Component {
+const Ingredients = ({ingredients}) => (
+  // View Parent/Container
+  React.createElement(View, { style: styles.recipeIngredients },
+    // Views children
+    React.createElement(Text, { style: styles.recipeIngredientsTitle }, 'Ingredientes'),
 
-  render() {
+    /**
+     * Mathod map of the Array in ECMAScript
+     * LOOP: Print the ingredients
+     * HERE: Views children
+     */
+    ingredients.map((item, index) => {
 
-    return(
-      <View style={ styles.recipeDescriptionBox }>
-        <Text style={ styles.recipeDescriptionTitle}>Descrição</Text>
-        <Text style={ styles.recipeDescription }>{this.props.description}</Text>
-      </View>
-    );
-  }
+      let { name, number, unity } = item;
 
-}
+      name = name.charAt(0).toUpperCase() + name.slice(1);
 
-class Ingredients extends React.Component {
+      switch(unity) {
+        case 0.33:
+          unity = '1/3';
+        break;
 
-  render() {
+        case 0.5:
+          unity = '1/2';
+        break;
+      }
 
-    return(
-      <View style={{ marginTop: 20, marginBottom: 20 }}>
-        <Text style={{
-          fontSize: 32,
-          fontFamily: 'umbrella',
-          color: 'white',
-          textAlign: 'center'
-        }}>Ingredientes</Text>
+      // Return generic view Item
+      return React.createElement(Item, { isIngredient: true, key: index, index: (index + 1) + 'º', name: name, number: number, unity: unity });
 
-        {
-          this.props.ingredients.map( (item, index) => {
+    })
+  )
+);
 
-            let name = item.name.charAt(0).toUpperCase() + item.name.slice(1)
+const Preparation = ({preparation}) => (
+  // View Parent/container
+  React.createElement(View, { style: styles.recipeIngredients },
+    //View children
+    React.createElement(Text, { style: styles.recipeIngredientsTitle }, 'Preparação'),
 
-            switch(item.unity) {
-              case 0.33:
-                item.unity = '1/3'
-              break;
+    /**
+     * Mathod map of the Array in ECMAScript
+     * LOOP: Print the ingredients
+     * HERE: Views children
+     */
+    preparation.map((item, index) =>
+      React.createElement(Item, { isIngredient: false, index: (index + 1) + 'º', name: item})
+    )
+  )
+);
+// Generic View
+const Item = ({ isIngredient, index, name, number, unity }) => (
 
-              case 0.5:
-                item.unity = '1/2'
-              break;
-            }
+  // View Parent/container
+  React.createElement(View, { style: [ styles.item, { height: isIngredient ? 60 : 70 } ] },
+    // Views children
+    // First child
+    React.createElement(View, { style: [ styles.itemIndex, styles.centerChild ] },
 
-            return <Item isIngredient={true} index={(index + 1) + 'º'} name={name} number={item.number} unity={item.unity} />
-          })
-        }
-      </View>
-    );
-  }
-}
+      React.createElement(Text, { style: { color: 'white' }}, index )
 
-class Preparation extends React.Component {
+    ),
+    // Second child
+    React.createElement(View, { style: styles.itemBody },
 
-  render() {
+      isIngredient ? /** true */(
 
-    return(
-      <View style={{ marginTop: 20, marginBottom: 20 }}>
-        <Text style={{
-          fontSize: 32,
-          fontFamily: 'umbrella',
-          color: 'white',
-          textAlign: 'center'
-        }}>Preparação</Text>
+        React.createElement(View, { style: styles.itemBody },
 
-        {
-          this.props.preparation.map( (item, index) => {
+          React.createElement(View, { style: styles.itemName },
 
-            //item = item.charAt(0).toUpperCase() + item.slice(1)
+            React.createElement(Text, { style: { color: 'white' } }, name)
 
-            return <Item isIngredient={false} index={(index + 1) + 'º'} name={item} />
-          })
-        }
-      </View>
-    );
-  }
-}
+          ),
 
-class Item extends React.Component {
+          React.createElement(View, { style: styles.itemQuantity },
+
+            React.createElement(Text, { style: { color: 'white' } }, `${number} ${unity}`)
+
+          )
+
+        )
+      ) : /** false */(
+        React.createElement(View, { style: [ styles.itemName, { borderTopRightRadius: 5, borderBottomRightRadius: 5 } ] },
+
+          React.createElement(Text, { style: { color: 'white'} }, name )
+
+        )
+      )
+
+    )
+  )
+
+);
+
+/*class Item extends React.Component {
 
   _isIngredient = (isIt) => {
     if(isIt) {
@@ -222,14 +260,12 @@ class Item extends React.Component {
     return(
       <View style={[ styles.item, { height: this.props.isIngredient ? 60 : 70 } ]}>
 
-        { /* Item Index */ }
         <View style={ [ styles.itemIndex, styles.centerChild ] }>
 
           <Text style={{ color: 'white' }}>{ this.props.index }</Text>
 
         </View>
 
-        { /* Item Info */ }
         <View style={ styles.itemBody }>
 
           {
@@ -243,7 +279,13 @@ class Item extends React.Component {
   }
 
 }
+*/
 
+
+/**
+ * The API StyleSheet is an abstraction similar to CSS StyleSheet.
+ * OBS: Here is using the method create in the StyleSheet object.
+ */
 const styles = StyleSheet.create({
 
   // Global Style
@@ -273,19 +315,21 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0
   },
+
+  // FSComponent Name
   recipeName: {
     fontSize: 60,
     padding: 10,
     alignSelf: 'stretch',
     textAlign: 'center',
     color: 'white',
-    //fontWeight: 'bold',
     fontFamily: 'umbrella'
   },
+
+  // FSComponent Description
   recipeDescriptionBox: {
     padding: 10,
     borderRadius: 5,
-    //elevation: 5,
     backgroundColor: 'white'
   },
   recipeDescriptionTitle: {
@@ -296,13 +340,16 @@ const styles = StyleSheet.create({
     fontStyle: 'italic'
   },
 
-  name: {
-    position: 'absolute',
-    left: 5,
-    bottom: 5,
-    color: 'rgba(223, 51, 32, .8)',
-    fontSize: 24,
-    fontWeight: 'bold'
+  // FSComponent Ingredients
+  recipeIngredients: {
+    marginTop: 20,
+    marginBottom: 20
+  },
+  recipeIngredientsTitle: {
+    fontSize: 32,
+    fontFamily: 'umbrella',
+    color: 'white',
+    textAlign: 'center'
   },
 
   // IItem

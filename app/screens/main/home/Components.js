@@ -6,11 +6,13 @@
  */
 
 import React from 'react';
+import DataBase from '../../../config/DataBase';
 import { StyleSheet, FlatList, Image, View, Text } from 'react-native';
 
-class Item extends React.Component {
-  render(){
-    if(this.props.isFavorite) {
+const Item = ({isFavorite, img, name}) => {
+
+    if(isFavorite) {
+
       return (
         <View style={{
           width:300,
@@ -24,7 +26,7 @@ class Item extends React.Component {
           paddingRight:2.5
         }}>
 
-          <Image style={{width:'100%', height:'100%',borderRadius:5}} source={this.props.img}/>
+          <Image style={{width:'100%', height:'100%',borderRadius:5}} source={{ uri: img}}/>
 
           <View style={{
             position:'absolute',
@@ -38,12 +40,12 @@ class Item extends React.Component {
             backgroundColor:'rgba(0,0,0,.3)'
           }}>
 
-            <Text style= {styles.name}>{this.props.recipename}</Text>
+            <Text style= {styles.name}>{name}</Text>
 
           </View>
 
       </View>
-      )
+    );
     }
 
     return (
@@ -60,7 +62,7 @@ class Item extends React.Component {
         paddingRight:2.5
       }}>
 
-       <Image   source={this.props.img}
+       <Image   source={img}
          style={{
            width:'100%',
            height:'100%',
@@ -80,41 +82,55 @@ class Item extends React.Component {
          backgroundColor:'rgba(0,0,0,.3)'
        }}>
 
-         <Text style= {styles.name}>{this.props.recipename}</Text>
+         <Text style= {styles.name}>{name}</Text>
 
        </View>
 
     </View>
-    )
-  }
+  );
 }
 
 class Favorites extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      db: new DataBase('recipes'),
+      favorites: []
+    }
+  }
+
+  componentWillMount() {
+    const { db, favorites } = this.state;
+
+    db.getDatas((docs) => {
+
+      console.log('here: ' + JSON.stringify(docs));
+
+      docs = docs.sort((a, b) => b.date - a.date);
+
+      if(docs != '' && docs != favorites) {
+        this.setState({
+          favorites: docs
+        });
+      }
+
+    });
+
+  }
+
   render(){
-    let dataHERE = [
-      {"image": require('../../../images/category/brazilian.jpg'), "name":"Brasileiras"},
-      {"image": require('../../../images/category/candy.jpg'), "name":"Doces"},
-      {"image": require('../../../images/category/chicken.jpg'), "name":"Frango"},
-      {"image": require('../../../images/category/french.jpg'),"name":"Francesa"},
-      {"image": require('../../../images/category/italian.jpg'),"name":"Italiana"},
-      {"image": require('../../../images/category/juices.jpg'),"name":"Sucos"},
-      {"image": require('../../../images/category/meat.jpg'),"name":"Carnes"},
-      {"image": require('../../../images/category/pastas.jpg'),"name":"Massas"},
-      {"image": require('../../../images/category/practices.jpg'),"name":"Práticas"},
-      {"image": require('../../../images/category/salty_fit.jpg'),"name":"Salgados Fit"},
-      {"image": require('../../../images/category/salty_vegan.jpg'),"name":"Salgados Vegano"},
-      {"image": require('../../../images/category/soups.jpg'),"name":"Sopas"},
-      {"image": require('../../../images/category/sweet_fit.jpg'),"name":"Doces Fit"},
-      {"image": require('../../../images/category/sweet_vegan.jpg'),"name":"Doces Vegano"},
-      {"image": require('../../../images/category/vegetarian.jpg'),"name":"Vegetariana"}
-    ]
+    const { favorites } = this.state;
+
+
 
     return(
     <View style={styles.favorites}>
 
       <FlatList
         horizontal={true}
-        data={dataHERE}
+        data={favorites}
         renderItem={({item})=> <Item isFavorite={true} img={item.image} recipename={item.name}/>}
       />
 
@@ -126,18 +142,18 @@ class Favorites extends React.Component {
 class RecentSearched extends React.Component {
   render () {
     let dataHERE = [
-      {"image": require('../../../images/category/brazilian.jpg')},
-      {"image": require('../../../images/category/candy.jpg')},
-      {"image": require('../../../images/category/chicken.jpg')},
-      {"image": require('../../../images/category/french.jpg')}
+      {"image": require('../../../images/categories/brazilian.jpg')},
+      {"image": require('../../../images/categories/candy.jpg')},
+      {"image": require('../../../images/categories/chicken.jpg')},
+      {"image": require('../../../images/categories/french.jpg')}
     ]
     return (
       <View style={styles.recentsearched}>
-      <FlatList
-      horizontal={true}
-      data={dataHERE}
-      renderItem={({item})=> <Item isFavorite={false} img={item.image}/>}
-      />
+        <FlatList
+          horizontal={true}
+          data={dataHERE}
+          renderItem={({item})=> <Item isFavorite={false} img={item.image}/>}
+        />
       </View>
     );
   }

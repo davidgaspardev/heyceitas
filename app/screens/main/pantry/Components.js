@@ -6,22 +6,7 @@
  */
 
 import React from 'react';
-import { TouchableOpacity, StyleSheet, Dimensions, TextInput, Modal, View, Text } from 'react-native'
-
-/**
- * Header Layout with title to the Pantry Screen
- */
-class Header extends React.Component {
-
-  render() {
-    return (
-      <View style={styles.header}>
-        <Text style={styles.title}>Armario</Text>
-      </View>
-    );
-  }
-
-}
+import { TouchableOpacity, StyleSheet, Dimensions, TextInput, Modal, View, Text } from 'react-native';
 
 /**
  * Layout to view the data of the ingredient saved in the database (MongoDB local).
@@ -30,7 +15,7 @@ class Ingredient extends React.PureComponent {
 
   render() {
     return (
-      <TouchableOpacity style={styles.ingredient} onPress={this.props.onPress}>
+      <TouchableOpacity style={styles.ingredient} onPress={this.props.onpress}>
 
         <View style={[ styles.ingredientBox, styles.centerChild ]}>
 
@@ -116,12 +101,12 @@ class IngredientAddOrDetail extends React.Component {
 
           <TextInput
             onChangeText={this.props.onChangeNumber}
-            placeholder="Quantidade do ingrediente"
+            placeholder="Quantidade"
           />
 
           <TextInput
             onChangeText={this.props.onChangeUnity}
-            placeholder="Unidade da quantidade"
+            placeholder="Unidade"
           />
 
         </View>
@@ -141,6 +126,10 @@ class IngredientAddOrDetail extends React.Component {
         <Text>{this.props.number}</Text>
         <Text>{this.props.unity}</Text>
 
+        <TouchableOpacity onPress={this.props.eventDelete}>
+          <Text>Delete</Text>
+        </TouchableOpacity>
+
       </View>
     );
   }
@@ -155,21 +144,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-
-  //Header Style
-  header: {
-    alignSelf: 'stretch',
-    height: 48,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  title: {
-    fontSize: 36,
-    fontFamily: 'umbrella',
-    color: '#952115'
-  },
-
   //Ingredient Style
   ingredient: {
     width: width / 3,
@@ -229,4 +203,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { Header, Ingredient, IngredientAddOrDetail };
+export { Ingredient, IngredientAddOrDetail };
