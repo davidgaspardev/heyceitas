@@ -5,7 +5,7 @@ import { TouchableOpacity, StyleSheet, Image, View, Text } from 'react-native';
  * Functional Stateless Component
  * Does not return JSX
  */
-const Header = ({title}) =>
+const Header = ({children}) =>
 React.createElement(
 
   // Name of view, in this is a Native View:
@@ -24,7 +24,7 @@ React.createElement(
     { style: styles.headerTitle },
 
     // Views Children, in this case is a string:
-    title
+    children
   )
 );
 

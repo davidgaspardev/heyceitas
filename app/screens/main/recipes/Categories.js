@@ -31,7 +31,7 @@ export default class Category extends React.Component {
     return(
       <View style={styles.container}>
 
-        <Header title='Categorias' />
+        <Header>Categorias</Header>
 
         <FlatList
           data={list}

@@ -156,3 +156,9 @@ export default class DataBase {
   }
 
 }
+
+import Realm from 'realm';
+
+class dbRealm {
+  
+}

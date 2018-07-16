@@ -76,7 +76,7 @@ export default class Pantry extends React.Component {
         backgroundColor: 'white'
       }}>
 
-        <Header title='Armário'/>
+        <Header>Armário</Header> 
 
         <IngredientAddOrDetail
           isDetail={this.state.isDetail}
@@ -193,7 +193,7 @@ export default class Pantry extends React.Component {
         tt = 'Mistura de bolo';
       }
       switch(tt) {
-        
+
           case 'Mistura para bolo':
             recipe = 0;
             break;
