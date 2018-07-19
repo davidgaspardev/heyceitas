@@ -12,8 +12,12 @@ import { Categories } from './CategoriesInfo';
 
 export default class Category extends React.Component {
 
-  // @constructor state initialization
-  // @param property
+  /**
+   * @constructor Category
+   * Declaring and initializing properties.
+   *
+   * @param {object} props
+   */
   constructor(props) {
     super(props)
 

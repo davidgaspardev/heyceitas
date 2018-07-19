@@ -5,11 +5,15 @@
  */
 
 import Mongo from 'react-native-local-mongodb'
-import { LOG_TAG_OK, LOG_TAG_ER, OBJ_DB } from './Log'
+import { Log } from './Log'
 
 export default class DataBase {
 
-  /** @constructs DataBase: Start object with favorite as filename to the data base */
+  /**
+   * @constructs
+   *
+   * @param {string} filename
+   */
   constructor(filename) {
 
     this.props = {
@@ -18,7 +22,7 @@ export default class DataBase {
 
     this.props.db.loadDatabase((err) => {
       if(err) {
-        LOG_TAG_ER(OBJ_DB, `(loadDatabase) error: ${err}`);
+        Log.err(Log.OBJ_DB, `(loadDatabase) error: ${err}`);
         throw err;
       }
 
@@ -26,16 +30,18 @@ export default class DataBase {
 
   }
 
+  /**
+   * To get all the data stored in MongoDB.
+   *
+   * @param {function} callback
+   */
   getDatas(callback) {
 
     this.props.db.find({}, (err, docs) => {
-    /**
-      * @param docs: type BJSON.
-      */
 
       // Order by index element
       docs = docs.sort((a, b) => a.date - b.date);
-      LOG_TAG_OK(OBJ_DB, `datas: ${JSON.stringify(docs)}`);
+      Log.ok(Log.OBJ_DB, `datas: ${JSON.stringify(docs)}`);
 
       // Reload list to tha Pantry Screen
       if(typeof(callback) == 'function') callback(docs);
@@ -44,13 +50,21 @@ export default class DataBase {
 
   }
 
+  /**
+   * To store data in MongoDB.
+   *
+   * @param {object} doc
+   * @param {function} callback
+   */
   setData(doc, callback) {
+
+    // Destructuring
     const { db } = this.props;
 
     // Count all documents in the datastore
     db.count({}, (err, count) => {
       if(err) {
-        LOG_TAG_ER(OBJ_DB, `(count) error: ${err}`);
+        Log.err(Log.OBJ_DB, `(count) error: ${err}`);
         throw err;
       }
 
@@ -59,7 +73,7 @@ export default class DataBase {
       db.insert(doc, (err) => {
 
         if(err) {
-          LOG_TAG_ER(OBJ_DB, `(insert) error: ${err}`);
+          Log.err(Log.OBJ_DB, `(insert) error: ${err}`);
           throw err;
         }
 
@@ -76,16 +90,23 @@ export default class DataBase {
 
   }
 
+  /**
+   * Check if you have stored data in MongoDB.
+   *
+   * @param {object} doc
+   * @param {function} callback
+   */
   hasData(doc, callback) {
+
+    // Destructuring
     const { db } = this.props;
+
     if(doc != null) {
+
       db.find({ _id: doc._id }, (err, docs) => {
-        /**
-         * @params docs
-         * @type object
-         */
+
         if(err) {
-          LOG_TAG_ER(OBJ_DB, `(MongoDB) find method error: ${err}`);
+          Log.err(Log.OBJ_DB, `(MongoDB) find method error: ${err}`);
           throw err;
         }
 
@@ -95,21 +116,19 @@ export default class DataBase {
 
         }else {
 
-          LOG_TAG_OK(OBJ_DB, `(MongoDB) find success: ${JSON.stringify(docs)}`);
+          Log.err(Log.OBJ_DB, `(MongoDB) find success: ${JSON.stringify(docs)}`);
 
           callback(true);
         }
+
       });
 
     }else {
 
       db.find({}, (err, docs) => {
-        /**
-         * @params docs
-         * @type object
-         */
+
         if(err) {
-          LOG_TAG_ER(OBJ_DB, `(MongoDB) find method error: ${err}`);
+          Log.err(Log.OBJ_DB, `(MongoDB) find method error: ${err}`);
           throw err;
         }
 
@@ -119,17 +138,25 @@ export default class DataBase {
 
         }else {
 
-          LOG_TAG_OK(OBJ_DB, `(MongoDB) find success: ${JSON.stringify(docs)}`);
+          Log.ok(Log.OBJ_DB, `(MongoDB) find success: ${JSON.stringify(docs)}`);
 
           callback(true);
         }
+        
       });
 
     }
 
   }
 
+  /**
+   * To remove data in MongoDB.
+   *
+   * @param {object} doc
+   * @param {function} callback
+   */
   setRemove(doc, callback) {
+    // Destructuring
     const { db } = this.props;
 
     let docRef;
@@ -143,7 +170,7 @@ export default class DataBase {
     //this.props.db.remove(doc, { multi: true }, (err) => {
     db.remove(docRef, { multi: true },(err) => {
       if(err) {
-        LOG_TAG_OK(OBJ_DB, `(remove) error: ${err}`);
+        Log.ok(Log.OBJ_DB, `(remove) error: ${err}`);
         throw err;
       }
 

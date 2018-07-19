@@ -5,12 +5,14 @@
 
 import React from 'react';
 import { AsyncStorage } from 'react-native';
-
-import { LOG_TAG, OBJ_ACCOUNT } from './Log'
+import { Log } from './Log'
 
 export default class User {
 
-  /** @constructor */
+  /**
+   * @constructor
+   * Declaring and initializing properties
+   */
   constructor() {
 
     this.props = {
@@ -21,7 +23,8 @@ export default class User {
 
   /**
    * Convert input param to output string
-   * @return {string}
+   * @return string
+   * @type string
    */
   static toString(variable) {
 
@@ -31,31 +34,46 @@ export default class User {
   }
 
   /**
-   * To check an account (Google/Facebook) in the database (AsyncStorage)
+   * Check if you have stored data with ACCOUNT_KEY key.
+   *
+   * @param callback
+   * @type anonymous function (action)
    */
   async hasAccount(callback) {
+    
+    // Destructuring
+    const { ACCOUNT_KEY } = this.props;
 
     try {
 
-      let account = await AsyncStorage.getItem(this.props.ACCOUNT_KEY)
+      // Getting stored data.
+      let account = await AsyncStorage.getItem(ACCOUNT_KEY);
 
       if(account == null) {
 
+        // No has stored data.
         callback(false);
 
       }else{
 
+        // Has stored data.
         callback(true);
+
       }
+
     }catch(err) {
 
-      LOG_TAG_ER(OBJ_ACCOUNT, `(AsyncStorage) hasAccount: ${err}`);
+      // There was an error fetching the stored data.
+      Log.err(Log.OBJ_ACCOUNT, `(AsyncStorage) hasAccount: ${err}`);
 
     }
   }
 
   /**
-   * To insert account (Google/Facebook) to the database (AsyncStorage)
+   * To insert account (Google/Facebook) to the database (AsyncStorage).
+   *
+   * @param {string} user
+   * @param {function} callback
    */
   async setAccount(user, callback) {
 
@@ -63,33 +81,54 @@ export default class User {
 
       user = toString(variable);
 
+      // Storing data.
       await AsyncStorage.setItem(this.props.ACCOUNT_KEY, user);
-      LOG_TAG_OK(OBJ_ACCOUNT, `(AsyncStorage) added with success: ${user}`);
+      Log.ok(Log.OBJ_ACCOUNT, `(AsyncStorage) added with success: ${user}`);
 
+      // Start function.
       callback();
 
     }catch(err) {
 
-      LOG_TAG_ER(OBJ_ACCOUNT, `(AsyncStorage) setAccount: ${err}`);
+      Log.err(Log.OBJ_ACCOUNT, `(AsyncStorage) setAccount: ${err}`);
 
     }
   }
 
   /**
-   * To get the account (Google/Facebook) to the database (AsyncStorage)
+   * To get the account (Google/Facebook) of the database (AsyncStorage).
    */
-  async getAccount() {
+  async getAccount(callback) {
 
-    try {
+    this.hasAccount(result => {
 
-      let account = AsyncStorage.getItem(this.props.ACCOUNT_KEY);
-      LOG_TAG_OK(OBJ_ACCOUNT, `(AsyncStorage) getAccount: ${toString(account)}`)
+      if(result) {
 
-      return account;
+        // Has stored account
+        try {
 
-    }catch(err) {
+          // Getting stored data.
+          let account = AsyncStorage.getItem(this.props.ACCOUNT_KEY);
+          Log.ok(Log.OBJ_ACCOUNT, `(AsyncStorage) getAccount: ${toString(account)}`)
 
-    }
+          // Returning stored data.
+          callback(account);
+
+        }catch(error) {
+
+          // An error occurred while fetching the stored data.
+          Log.err(Log.OBJ_ACCOUNT,  `(AsyncStorage) getAccount failed: ${error}`);
+
+        }
+
+      }else {
+
+        // No has stored account
+        Log.err(Log.OBJ_ACCOUNT, `Not has stored account`);
+
+      }
+
+    });
 
   }
 

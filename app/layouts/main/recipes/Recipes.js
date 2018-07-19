@@ -11,12 +11,16 @@ import Communication from '../../../config/Communication'
 
 export default class Recipes extends React.Component {
 
-  // @constructor state initialization
-  // @param property
+  /**
+   * @constructor
+   *
+   *
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
 
-    // Array of obejct destructuring
+    // Destructuring
     const { navigation } = this.props;
 
     // State initialization

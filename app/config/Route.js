@@ -3,21 +3,23 @@
  */
 
 import React from 'react';
+
+// API: React Navigation
 import { createTabNavigator, createStackNavigator } from 'react-navigation';
+
+// APIs of React Native
 import { Image } from 'react-native';
 
-//import List from './Data';
-
 // Login Activity
-import Login from '../screens/login/Login';
+import Login from '../layouts/login/Login';
 
 // Main Activity
-import Home from '../screens/main/home/Home';
-import Pantry from '../screens/main/pantry/Pantry';
-import Categories from '../screens/main/recipes/Categories';
-import Recipes from '../screens/main/recipes/Recipes';
-import RecipeDetail from '../screens/main/recipes/RecipeDetail';
-import Settings from '../screens/main/settings/Settings';
+import Home from '../layouts/main/home/Home';
+import Pantry from '../layouts/main/pantry/Pantry';
+import Categories from '../layouts/main/recipes/Categories';
+import Recipes from '../layouts/main/recipes/Recipes';
+import RecipeDetail from '../layouts/main/recipes/RecipeDetail';
+import Settings from '../layouts/main/settings/Settings';
 
 const RecipesRoute = createStackNavigator({
 

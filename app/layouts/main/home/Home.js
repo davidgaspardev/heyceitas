@@ -5,6 +5,10 @@ import { Favorites, RecentSearched } from './Components'
 
 export default class Home extends React.Component {
 
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <View style={[styles.container, {paddingBottom:5}]}>

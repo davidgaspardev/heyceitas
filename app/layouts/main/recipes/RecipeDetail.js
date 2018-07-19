@@ -144,6 +144,8 @@ const Ingredients = ({ingredients}) => (
 
       name = name.charAt(0).toUpperCase() + name.slice(1);
 
+      if(number == null) number = '';
+
       switch(unity) {
         case 0.33:
           unity = '1/3';

@@ -56,7 +56,8 @@ class IngredientAddOrDetail extends React.Component {
         name: '',
         number: 0,
         unity: ''
-      }
+      },
+      unity: ['kg', 'g', 'u', 'L', 'mL'] // 0-kilograma, 1-grama, 2-unidade, 3-litro, 4-mililitro
     }
   }
 
@@ -73,7 +74,7 @@ class IngredientAddOrDetail extends React.Component {
 
             <View style={styles.itemAddOrDetail}>
               {
-                this.props.isDetail? this._detail() : this._add()
+                this.props.isDetail? this.renderDetail() : this.renderAdd()
               }
             </View>
 
@@ -83,7 +84,7 @@ class IngredientAddOrDetail extends React.Component {
     );
   }
 
-  _add() {
+  renderAdd() {
     return(
       <View style={{ flex: 1}}>
         <View style={[styles.itemAddHeader, styles.centerChild]}>
@@ -96,6 +97,7 @@ class IngredientAddOrDetail extends React.Component {
             onChangeText={this.props.onChangeName}
             maxLength={25}
             numberOfLine={1}
+            autoCapitalize={'none'}
             placeholder="Nome do ingrediente"
           />
 
@@ -118,7 +120,7 @@ class IngredientAddOrDetail extends React.Component {
     );
   }
 
-  _detail() {
+  renderDetail() {
     return(
       <View>
 

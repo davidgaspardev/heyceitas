@@ -1,5 +1,6 @@
 /**
- *
+ * Log in with Google or Facebook account, perform HTTP
+ * communication with the HEYserver server for validation and registration.
  *
  * @author davidgaspar.dev@gmail.com (David Gaspar)
  */
@@ -9,6 +10,7 @@ import Account from '../../config/Account';
 import Communication from '../../config/Communication';
 import { TouchableOpacity, Dimesions,  StyleSheet, AsyncStorage, Image, View } from 'react-native';
 
+// Google Signin Module
 import { GoogleSignin } from 'react-native-google-signin';
 
 export default class Login extends React.Component {
@@ -23,10 +25,14 @@ export default class Login extends React.Component {
       communication: new Communication()
     };
 
+    //
     this._hasLogin();
 
   }
 
+  /**
+   * Checki if you already have an account saved in the app.
+   */
   _hasLogin() {
 
     this.state.account.hasAccount(res => {

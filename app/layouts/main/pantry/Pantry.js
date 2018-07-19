@@ -13,11 +13,17 @@ import { StyleSheet, TouchableOpacity, FlatList, Image,View } from 'react-native
 import DataBase from '../../../config/DataBase';
 import { Header, FloatingButton } from '../Components';
 import { Ingredient, IngredientAddOrDetail } from './Components';
-import { LOG_SCREEN, PANTRY_SCREEN, CONSTRUCTOR, RENDER, POS_RENDER } from '../../../config/Log';
+import { Log } from '../../../config/Log';
 
 /** PANTRY SCREEN */
 export default class Pantry extends React.Component {
 
+  /**
+   * @constructor Pantry
+   * Declaring and initializing properties.
+   *
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
 
@@ -54,9 +60,29 @@ export default class Pantry extends React.Component {
     })
   }
 
+  componentDidMount() {
+
+    // Destructuring
+    const { db } = this.state;
+    const { PANTRY_LAYOUT, POS_RENDER } = Log;
+
+    Log.warn(PANTRY_LAYOUT, POS_RENDER, 'the end')
+
+    //db.setRemove();
+
+    db.getDatas(datas => this.setState({
+      ingredients: datas
+    }));
+
+  }
+
   render() {
 
+    // Destructuring
     const { db } = this.state;
+    const { PANTRY_LAYOUT, RENDER } = Log;
+
+    Log.warn(PANTRY_LAYOUT, RENDER, 'Started');
 
     db.hasData(null, (has) => {
 
@@ -66,8 +92,6 @@ export default class Pantry extends React.Component {
         });
       }
     });
-
-    LOG_SCREEN(PANTRY_SCREEN, RENDER, 'Started/Update');
 
     return (
       <View style={{
@@ -85,7 +109,7 @@ export default class Pantry extends React.Component {
           unity={this.state.detail.unity}
 
           visible={ this.state.modalVisible }
-          onpress={ this._addIngredient.bind(this) }
+          onpress={ this.addIngredient.bind(this) }
           eventBack={ () => this.setState({ modalVisible: false }) }
           eventDelete={ () => {
             this.state.db.setRemove(this.state.detail, () => {
@@ -105,7 +129,7 @@ export default class Pantry extends React.Component {
         <FlatList
           data={this.state.ingredients}
           numColumns={3}
-          renderItem={({item}) => this._insertIngredient(item) }
+          renderItem={({item}) => this.renderInsertIngredient(item) }
           keyExtractor={(item, index) => item._id}
         />
 
@@ -122,32 +146,13 @@ export default class Pantry extends React.Component {
     );
   }
 
-  componentDidMount() {
-    // JSON destructuring
-    const { db } = this.state;
-
-    LOG_SCREEN(PANTRY_SCREEN, POS_RENDER, 'Started/Update')
-
-    //this.state.db.setRemove();
-
-    db.getDatas(datas => this.setState({
-      ingredients: datas
-    }));
-
-  }
-
-
-  _insertIngredient(item) {
+  renderInsertIngredient(item) {
     return <Ingredient name={item.name} number={item.number} unity={item.unity} onpress={() => {
       this._setModalVisible(true, true, item);
     }}/>
   }
 
-  _detailIngredient() {
-    this.modalVisible(false, )
-  }
-
-  _addIngredient() {
+  addIngredient() {
     const { db, newIngredient } = this.state;
 
     this._setModalVisible(false);
@@ -193,7 +198,7 @@ export default class Pantry extends React.Component {
         tt = 'Mistura de bolo';
       }
       switch(tt) {
-        
+
           case 'Mistura para bolo':
             recipe = 0;
             break;
