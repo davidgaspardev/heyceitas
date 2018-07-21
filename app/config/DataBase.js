@@ -4,8 +4,8 @@
  * @author davidgaspar.dev@gmail.com (David Gaspar)
  */
 
-import Mongo from 'react-native-local-mongodb'
-import { Log } from './Log'
+import Mongo from 'react-native-local-mongodb';
+import { Log } from './Log';
 
 export default class DataBase {
 
@@ -191,3 +191,7 @@ export default class DataBase {
   }
 
 }
+
+// ================================== NEW DATABASE ================================== //
+
+import Realm from 'realm';

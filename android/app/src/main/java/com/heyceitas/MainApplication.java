@@ -10,6 +10,8 @@ import com.facebook.soloader.SoLoader;
 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 
+import io.realm.react.RealmReactPackage;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new RNGoogleSigninPackage()
+          new RNGoogleSigninPackage(), // Added Google Signin
+          new RealmReactPackage() // Added Realm
       );
     }
 
