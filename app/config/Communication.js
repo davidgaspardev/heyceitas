@@ -10,10 +10,10 @@ import { Log } from './Log';
 
 export default class Communication {
 
-  constructor() {
+  constructor(address, port) {
 
     this.props = {
-      address: 'http://18.222.51.173:8080',
+      address: `${address}:${port}`,
       path: {
         recipes: '/recipes',
         login: '/login'
@@ -66,9 +66,9 @@ export default class Communication {
       //    'accept': 'application/json',
       //    'content-type': 'application/json'
       //  },
-        //@value string
       //  body: account
       //};
+
       const protocol = this._HTTPprotocol(1, undefined, { body: account });
       Log.ok(Log.OBJ_COMUNIC, `(fetch) HTTP protocol: ${JSON.stringify(protocol)}`);
 
@@ -115,6 +115,7 @@ export default class Communication {
       //    'Authorization': JSON.parse(account).idToken
       //  }
       //};
+
       const protocol = this._HTTPprotocol(0, { Accept: 'application/json', 'Content-Type': 'application/json' });
       Log.ok(OBJ_COMUNIC, `(fetch) HTTP protocol: ${JSON.stringify(protocol)}`);
 
@@ -122,9 +123,11 @@ export default class Communication {
       let responseJSON = await response.json();
 
       callback(responseJSON);
+      Log.err(OBJ_COMUNIC, `(fetch) success: ${responseJSON.length}`);
 
     }catch(err) {
 
+      callback(null, err.message);
       Log.err(OBJ_COMUNIC, `(fetch) error: ${err}`);
 
     }

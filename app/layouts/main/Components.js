@@ -5,26 +5,27 @@ import { TouchableOpacity, StyleSheet, Image, View, Text } from 'react-native';
  * Functional Stateless Component
  * Does not return JSX
  */
-const Header = ({title}) =>
-React.createElement(
-
-  // Name of view, in this is a Native View:
-  View,
-
-  // Property, in this case only has definite style:
-  { style: styles.header },
-
-  // Views children, in this case only has a View:
+const Header = ({children, size}) => (
   React.createElement(
 
-    // Name of view, in this case is a Native Text:
-    Text,
+    // Name of view, in this is a Native View:
+    View,
 
-    // Property, in this case only has defined style:
-    { style: styles.headerTitle },
+    // Property, in this case only has definite style:
+    { style: [ styles.header, size ? { height: 65 } : null ]},
 
-    // Views Children, in this case is a string:
-    title
+    // Views children, in this case only has a View:
+    React.createElement(
+
+      // Name of view, in this case is a Native Text:
+      Text,
+
+      // Property, in this case only has defined style:
+      { style: [ styles.headerTitle, size ? { fontSize: size } : null ] },
+
+      // Views Children, in this case is a string:
+      children
+    )
   )
 );
 

@@ -6,173 +6,118 @@
  */
 
 import React from 'react';
-import DataBase from '../../../config/DataBase';
 import { StyleSheet, FlatList, Image, View, Text } from 'react-native';
 
 const Item = ({isFavorite, img, name}) => {
 
     if(isFavorite) {
 
+      // Return JSX
       return (
-        <View style={{
-          width:300,
-          height:'100%',
-          margin:5,
-          backgroundColor:'white',
-          alignItems:'center',
-          paddingTop:5,
-          paddingLeft:2.5,
-          paddingBottom:5,
-          paddingRight:2.5
-        }}>
+        <View style={styles.favoritesItemContainer}>
 
-          <Image style={{width:'100%', height:'100%',borderRadius:5}} source={{ uri: img}}/>
+          <Image source={{ uri: img }} style={{ flex: 1, borderRadius: 5 }} />
 
-          <View style={{
-            position:'absolute',
-            left:2.5,
-            right:2.5,
-            top:5,
-            bottom:5,
-            alignItems:'center',
-            justifyContent:'center',
-            borderRadius:5,
-            backgroundColor:'rgba(0,0,0,.3)'
-          }}>
+          <View style={styles.favoritesItemOpacity}>
 
-            <Text style= {styles.name}>{name}</Text>
+            <Text style={styles.favoritesItemText}>{name}</Text>
 
           </View>
 
-      </View>
-    );
+        </View>
+      );
     }
 
+    // Return JSX
     return (
+      <View style={styles.historicItemContainer}>
 
-      <View style={{
-        width:130,
-        height:'100%',
-        margin:2.5,
-        backgroundColor:'white',
-        alignItems:'center',
-        paddingTop:0,
-        paddingLeft:2.5,
-        paddingBottom:5,
-        paddingRight:2.5
-      }}>
+        <Image source={img} style={{
 
-       <Image   source={img}
-         style={{
-           width:'100%',
-           height:'100%',
-           borderRadius:5
-         }}
-       />
+          // To set flex to a static image, you must first assign the undefined value to the dimensions.
+          width: undefined,
+          height: undefined,
+          flex: 1
+        }}/>
 
-       <View style={{
-         position:'absolute',
-         left:0.5,
-         right:0.5,
-         top:0,
-         bottom:5,
-         alignItems:'center',
-         justifyContent:'center',
-         borderRadius:5,
-         backgroundColor:'rgba(0,0,0,.3)'
-       }}>
+      </View>
+    );
+}
 
-         <Text style= {styles.name}>{name}</Text>
+const Favorites = ({ favorites }) => (
+  <View style={styles.favoritesContainer}>
 
-       </View>
+    <FlatList
+      horizontal={true}
+      data={favorites}
+      renderItem={({item, index}) => <Item hey={index} isFavorite={true} img={item.image} name={item.name} />}
+      keyExtracter={(item, index) => index}
+    />
 
+  </View>
+);
+
+const Historic = () => {
+  let dataHERE = [
+    {"image": require('../../../images/categories/brazilian.jpg')},
+    {"image": require('../../../images/categories/candy.jpg')},
+    {"image": require('../../../images/categories/chicken.jpg')},
+    {"image": require('../../../images/categories/french.jpg')}
+  ]
+
+  // Return JSX
+  return (
+    <View style={styles.historicContainer}>
+
+      <Text style={{padding:7.5}}>BUSCAS RECENTES</Text>
+
+      <FlatList
+        horizontal={true}
+        data={dataHERE}
+        renderItem={({item, index})=> <Item key={index} isFavorite={false} img={item.image}/>}
+      />
     </View>
   );
 }
 
-class Favorites extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      db: new DataBase('recipes'),
-      favorites: []
-    }
-  }
-
-  componentWillMount() {
-    const { db, favorites } = this.state;
-
-    db.getDatas((docs) => {
-
-      console.log('here: ' + JSON.stringify(docs));
-
-      docs = docs.sort((a, b) => b.date - a.date);
-
-      if(docs != '' && docs != favorites) {
-        this.setState({
-          favorites: docs
-        });
-      }
-
-    });
-
-  }
-
-  render(){
-    const { favorites } = this.state;
-
-
-
-    return(
-    <View style={styles.favorites}>
-
-      <FlatList
-        horizontal={true}
-        data={favorites}
-        renderItem={({item})=> <Item isFavorite={true} img={item.image} recipename={item.name}/>}
-      />
-
-    </View>
-    );
-  }
-}
-
-class RecentSearched extends React.Component {
-  render () {
-    let dataHERE = [
-      {"image": require('../../../images/categories/brazilian.jpg')},
-      {"image": require('../../../images/categories/candy.jpg')},
-      {"image": require('../../../images/categories/chicken.jpg')},
-      {"image": require('../../../images/categories/french.jpg')}
-    ]
-    return (
-      <View style={styles.recentsearched}>
-        <FlatList
-          horizontal={true}
-          data={dataHERE}
-          renderItem={({item})=> <Item isFavorite={false} img={item.image}/>}
-        />
-      </View>
-    );
-  }
-}
-
 const styles = StyleSheet.create({
-  favorites:{
-    flex:2,
-    marginTop:-20
+
+  // Favorites style:
+  favoritesContainer:{
+    flex: 1
   },
-  name: {
-    fontSize:26,
-    fontWeight:'bold',
-    color:'white'
+  favoritesItemContainer: {
+    width: 300,
+    height: '100%',
+    padding: 5
   },
-  recentsearched: {
-    flex:3,
-    marginBottom:-20
+  favoritesItemOpacity: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    bottom: 5,
+    left: 5,
+    backgroundColor: 'rgba( 0, 0, 0, .3)',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  favoritesItemText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'rgba( 255, 255, 255, .8)',
+    textAlign: 'center'
+  },
+
+  // Historic style:
+  historicContainer: {
+    flex: 1,
+    flexDirection: 'column'
+  },
+  historicItemContainer: {
+    width: 125,
+    height: '100%'
   }
 });
 
-export { Favorites, RecentSearched };
+export { Favorites, Historic };

@@ -5,7 +5,7 @@
  */
 
 import React from 'react'
-import { TouchableOpacity, ActivityIndicator, Dimensions, StyleSheet, FlatList, Image, View, Text } from 'react-native'
+import { TouchableOpacity, Dimensions, StyleSheet, FlatList, Image, View, Text } from 'react-native'
 
 import Communication from '../../../config/Communication'
 
@@ -27,21 +27,42 @@ export default class Recipes extends React.Component {
     this.state = {
       isLoading: true,
       category: navigation.state.params.category,
-      list: []
+      list: [],
+      err: null
     };
+
+    this.restartConexao = this.restartConexao.bind(this);
+
+  }
+
+  restartConexao() {
+    this.setState({ err: null }, this.startConexao());
+  }
+
+  startConexao() {
+    new Communication('http://18.222.51.173', 8080).getRecipes(this.state.category,
+      (result, err) => {
+
+        // An error occurred in the request
+        if(err) this.setState({ err });
+
+        // Success in requisition
+        else this._insertItems(result);
+
+      });
   }
 
   componentWillMount() {
 
     // Request recipes with HTTP protocol
-    new Communication().getRecipes(this.state.category, result => this._insertItems(result));
+    this.startConexao();
 
   }
 
 
   render() {
     // Array of obejct destructuring
-    const { isLoading, list } = this.state;
+    const { isLoading, list, err } = this.state;
 
     if (isLoading) {
       return (
@@ -51,6 +72,11 @@ export default class Recipes extends React.Component {
             width: 200,
             height: 150
           }}/>
+
+          {
+            err ? this._renderError() : null
+          }
+
         </View>
       );
     }
@@ -80,6 +106,20 @@ export default class Recipes extends React.Component {
       isLoading: false,
       list: list
     });
+  }
+
+  _renderError() {
+    const { err } = this.state;
+
+    return (
+      <TouchableOpacity style={styles.errContainer} onPress={this.restartConexao} >
+
+        <Text style={styles.errText} >Desculpa ocorreu um erro, CLIQUE AQUI para tentar novamente...</Text>
+        <Text style={styles.errText} maxLine={1} >{`OBS: ${err}`}</Text>
+
+      </TouchableOpacity>
+    );
+
   }
 
 }
@@ -138,5 +178,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 5,
     textAlign: 'center'
+  },
+
+  errContainer: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    left: 0,
+
+    height: 50,
+    padding: 10,
+    backgroundColor: '#ff5c5c',
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  errText: {
+    fontSize: 10,
+    color: 'white'
   }
 });

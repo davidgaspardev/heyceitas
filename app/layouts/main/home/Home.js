@@ -1,29 +1,57 @@
+/**
+ * @author davidgaspar@gmail.com (David Gaspar)
+ */
 import React from 'react';
 import { StyleSheet, Image, View, Text } from 'react-native';
+import { Header } from '../Components';
+import { Favorites, Historic } from './Components';
+import { Log } from '../../../config/Log';
+import DataBase from '../../../config/DataBase';
 
-import { Favorites, RecentSearched } from './Components'
 
 export default class Home extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      db: [ new DataBase('recipes'), new DataBase('hitoric') ],
+      favorites: null,
+      historic: null
+    }
+
+  }
+
+  componentWillMount() {
+
+    const { db } = this.state;
+
+    db[0].getDatas(docs => {
+    docs = docs.sort((a, b) => b.date - a.date);
+      this.setState({ favorites: docs });
+    });
+    db[1].getDatas(docs => {
+      docs = docs.sort((a, b) => b.date - a.date);
+      this.setState({ historic: docs });
+    });
+
   }
 
   render() {
+
+    // Destructuring
+    const { favorites, historic } = this.state;
+    const { HOME_LAYOUT } = Log;
+
+    // Return JSX
     return (
-      <View style={[styles.container, {paddingBottom:5}]}>
+      <View style={[styles.container]}>
 
-        <Image source={require('../../../images/logos/heyceitas.png')} style={styles.logo}/>
+        <Header size={45} >HeyCeitas</Header>
 
-        <Favorites/>
+        <Favorites favorites={favorites} />
 
-        <View style={styles.footer}>
-
-          <Text style={{padding:7.5}}>BUSCAS RECENTES></Text>
-
-          <RecentSearched/>
-
-        </View>
+        <Historic historic={historic}/>
 
       </View>
     );

@@ -17,16 +17,16 @@ export default class DataBase {
   constructor(filename) {
 
     this.props = {
-      db: new Mongo({filename: filename})
+      db: new Mongo({filename: filename, autoload: true }),
+      filename: filename
     };
 
-    this.props.db.loadDatabase((err) => {
-      if(err) {
-        Log.err(Log.OBJ_DB, `(loadDatabase) error: ${err}`);
-        throw err;
-      }
-
-    });
+    //this.props.db.loadDatabase((err) => {
+    //  if(err) {
+    //    Log.err(Log.OBJ_DB, `(loadDatabase) error: ${err}`);
+    //    throw err;
+    //  }
+    //});
 
   }
 
@@ -37,11 +37,17 @@ export default class DataBase {
    */
   getDatas(callback) {
 
-    this.props.db.find({}, (err, docs) => {
+    //Destructuring
+    const { db, filename } = this.props;
+    const { OBJ_DB } = Log;
+
+    db.persistence.compactDatafile;
+
+    db.find({}, (err, docs) => {
 
       // Order by index element
       docs = docs.sort((a, b) => a.date - b.date);
-      Log.ok(Log.OBJ_DB, `datas: ${JSON.stringify(docs)}`);
+      Log.ok(OBJ_DB, `${filename} | datas: ${docs.length}`);
 
       // Reload list to tha Pantry Screen
       if(typeof(callback) == 'function') callback(docs);
@@ -59,12 +65,12 @@ export default class DataBase {
   setData(doc, callback) {
 
     // Destructuring
-    const { db } = this.props;
+    const { db, filename } = this.props;
 
     // Count all documents in the datastore
     db.count({}, (err, count) => {
       if(err) {
-        Log.err(Log.OBJ_DB, `(count) error: ${err}`);
+        Log.err(Log.OBJ_DB, `${filename} | (count) error: ${err}`);
         throw err;
       }
 
@@ -73,7 +79,7 @@ export default class DataBase {
       db.insert(doc, (err) => {
 
         if(err) {
-          Log.err(Log.OBJ_DB, `(insert) error: ${err}`);
+          Log.err(Log.OBJ_DB, `${filename} | (insert) error: ${err}`);
           throw err;
         }
 
@@ -81,6 +87,8 @@ export default class DataBase {
         if(typeof(callback) == 'function'){
 
           this.getDatas(callback);
+
+          db.persistence.compactDatafile;
 
         }
 
@@ -99,14 +107,14 @@ export default class DataBase {
   hasData(doc, callback) {
 
     // Destructuring
-    const { db } = this.props;
+    const { db, filename } = this.props;
 
     if(doc != null) {
 
       db.find({ _id: doc._id }, (err, docs) => {
 
         if(err) {
-          Log.err(Log.OBJ_DB, `(MongoDB) find method error: ${err}`);
+          Log.err(Log.OBJ_DB, `${filename} | (MongoDB) find method error: ${err}`);
           throw err;
         }
 
@@ -116,7 +124,7 @@ export default class DataBase {
 
         }else {
 
-          Log.err(Log.OBJ_DB, `(MongoDB) find success: ${JSON.stringify(docs)}`);
+          Log.err(Log.OBJ_DB, `${filename} | (MongoDB) find success: ${docs.length} docs`);
 
           callback(true);
         }
@@ -128,7 +136,7 @@ export default class DataBase {
       db.find({}, (err, docs) => {
 
         if(err) {
-          Log.err(Log.OBJ_DB, `(MongoDB) find method error: ${err}`);
+          Log.err(Log.OBJ_DB, `${filename} | (MongoDB) find method error: ${err}`);
           throw err;
         }
 
@@ -138,11 +146,11 @@ export default class DataBase {
 
         }else {
 
-          Log.ok(Log.OBJ_DB, `(MongoDB) find success: ${JSON.stringify(docs)}`);
+          Log.ok(Log.OBJ_DB, `${filename} | (MongoDB) find success: ${docs.length}`);
 
           callback(true);
         }
-        
+
       });
 
     }
@@ -157,7 +165,7 @@ export default class DataBase {
    */
   setRemove(doc, callback) {
     // Destructuring
-    const { db } = this.props;
+    const { db, filename } = this.props;
 
     let docRef;
 
@@ -170,7 +178,7 @@ export default class DataBase {
     //this.props.db.remove(doc, { multi: true }, (err) => {
     db.remove(docRef, { multi: true },(err) => {
       if(err) {
-        Log.ok(Log.OBJ_DB, `(remove) error: ${err}`);
+        Log.ok(Log.OBJ_DB, `${filename} | (remove) error: ${err}`);
         throw err;
       }
 

@@ -11,7 +11,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, FlatList, Image,View } from 'react-native';
 
 import DataBase from '../../../config/DataBase';
-import { Header, FloatingButton } from '../Components';
+import { Header, FloatingButton as Button } from '../Components';
 import { Ingredient, IngredientAddOrDetail } from './Components';
 import { Log } from '../../../config/Log';
 
@@ -26,6 +26,11 @@ export default class Pantry extends React.Component {
    */
   constructor(props) {
     super(props);
+
+    // Destructuring
+    const { PANTRY_LAYOUT, CONSTRUCTOR } = Log;
+
+    Log.warn(PANTRY_LAYOUT, CONSTRUCTOR, 'Declaring and initializing properties');
 
     this.state = {
       db: new DataBase('Pantry'),
@@ -64,9 +69,9 @@ export default class Pantry extends React.Component {
 
     // Destructuring
     const { db } = this.state;
-    const { PANTRY_LAYOUT, POS_RENDER } = Log;
+    const { PANTRY_LAYOUT, RENDER_AFT } = Log;
 
-    Log.warn(PANTRY_LAYOUT, POS_RENDER, 'the end')
+    Log.warn(PANTRY_LAYOUT, RENDER_AFT, 'Render finalized')
 
     //db.setRemove();
 
@@ -100,7 +105,7 @@ export default class Pantry extends React.Component {
         backgroundColor: 'white'
       }}>
 
-        <Header title='Armário'/>
+        <Header>Armário</Header>
 
         <IngredientAddOrDetail
           isDetail={this.state.isDetail}
@@ -133,7 +138,7 @@ export default class Pantry extends React.Component {
           keyExtractor={(item, index) => item._id}
         />
 
-        <FloatingButton
+        <Button
           icon={require('../../../images/icons/add.png')}
           event={() => this._setModalVisible(true)}
         />

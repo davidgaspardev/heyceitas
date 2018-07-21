@@ -175,7 +175,7 @@ const Preparation = ({preparation}) => (
      * HERE: Views children
      */
     preparation.map((item, index) =>
-      React.createElement(Item, { isIngredient: false, index: (index + 1) + 'º', name: item})
+      React.createElement(Item, { isIngredient: false, key: index, index: (index + 1) + 'º', name: item})
     )
   )
 );
