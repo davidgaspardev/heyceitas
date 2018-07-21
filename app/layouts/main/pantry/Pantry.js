@@ -1,3 +1,4 @@
+
 /**
  * Pantry Component, responsible for storing the ingredients in the database,
  * being visible to the user as a list formatted with three columns.
